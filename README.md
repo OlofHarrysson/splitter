@@ -1,0 +1,1 @@
+Could also have people write in real times if they prefer to mark down start and stop by pen and paper
