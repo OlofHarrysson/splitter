@@ -40,7 +40,7 @@ def cut_scene(scene, metadata):
 
   args = [
     'ffmpeg', '-i', 'movies/output.avi', '-ss', f'{scene_start}', '-t',
-    f'{duration}', f'movie_outputs/scene_{scene_name}.avi'
+    f'{duration}', '-c', 'copy', f'movie_outputs/scene_{scene_name}.avi'
   ]
   completed = subprocess.run(args, capture_output=True)
   print('returncode:', completed.returncode)

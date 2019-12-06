@@ -1,0 +1,81 @@
+Have different options
+- QR code
+- Sound (good because sample rate is so high -> exact time)
+- Hand signals / actions
+  Dataset: https://20bn.com/datasets/jester
+  95% accuracy on some of these actions
+- Pure timestamp (from an app / input by hand if you dont want to use app)
+
+QR-code
+We don't care about much information - just want to be able to see it from afar.
+There are different types. iQR seems to be better, https://www.qrcode.com/en/codes/iqr.html but haven't found a reader. Supports rectangle qr codes which fits a phone better
+
+Better QR code
+Can make each pixel bigger. Can encode a bit in a corner piece. Can make each pixel have 3 values (white, gray, black) or even more with RGB. Quickly becomes enough bits.
+
+3x3 pixels -> 2^9=512
+3x3 pixels -> 3^9=19683 (white, gray, black)
+3x3 pixels -> 4^9=262144 (white, light-gray, dark-gray, black)
+4x4 pixels -> 2^16=65536
+4x4 pixels -> 3^16=43046721
+
+
+QR-det-network
+A network where the last layer does avg-pool in the depth layer to get a grid of probabilities for a found qr detections. Could do data like I did for my thesis.
+
+App
+If I do an app it offers up a few possibilities. I can create a project within the app and from there create complicated tags that wont fit in a QR code - but they will be mapped to simple ints which do fit in QR - hopefully even miiini QR. Once the project is finilized you can export the mapping to the python program - json or maybe through a big QR code that you scan with webcam-ish?
+
+App should also have option of just saving tags, without putting them into a QR and sync to video.
+
+
+Zbar
+Want to try to see if I can find finder patterns even if I cant decode the bar
+
+Links
+http://qrcode.meetheed.com/index.php - qrcodes explained
+https://www.qrcode.com/en/codes/iqr.html - iqr and more
+
+
+Final Cut Xml
+Want to let users import media that comes with keywords. In xml you have to specify the video and its format, fps etc - what if users have other preference?
+Would be better to let users import the media, select the files and export an xml - send that to my program which creates a new xml and they can import that
+
+Final Cut / Premier Addon
+Mark import folder and right click -> splitter organize -> brings up window with some settings. One cool feature would be to analyze images / sound / metadata to create automatic clips or tags along with the defined ones.
+
+
+
+Finns det en nisch som ligger under alla superkomplexa logging tools? Basic logging för att slippa namnge varje mapp.
+
+Competitors
+Adobe Prelude
+Lumberjack system
+Movie Slate
+Keyflow pro
+Cut Notes
+
+
+Pros & Cons QR code
+Pro - Video doesn't need a timestamp. Good if no GPS / bad clock
+Pro - Can print pre-defined QR codes to avoid using an app
+Pro - Keeps information if video is re-encoded.
+
+Con - Have to analyze images to find qr-code. Expensive, can miss them
+Con - Easier to create event directly in an app with time than to create event and then link to video.
+
+
+Pure post-processing options
+Dictating speech seems very important but already has a few big players
+Automatic tagging of video would be good. What tags to select?
+Automatically detect scene-repeats (duplicates) would be useful. What about scenes which are similar but not duplicates? Could give a draft that can be edited
+
+
+
+
+
+
+
+
+
+
