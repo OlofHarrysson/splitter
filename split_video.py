@@ -1,5 +1,3 @@
-from pyzbar.pyzbar import decode
-from pyzbar.wrapper import ZBarSymbol
 from PIL import Image
 import pyqrcode
 import cv2
@@ -8,93 +6,125 @@ import sys
 import subprocess
 from pathlib import Path
 import anyfig
+from signal_detectors import ZbarQRDetector, OpenCVDetector
+import numpy as np
 
 
 @anyfig.config_class
 class Config():
   def __init__(self):
-    self.input_file = Path('movies/work.mp4')
-    # self.input_file = Path('movies/home.avi')
+    # self.input_file = Path('movies/work.mp4')
+    self.input_file = Path('movies/home.avi')
+    # self.input_file = Path('movies/intro1.mp4')
+    # self.input_file = Path('movies/park.MOV')
+    # self.input_file = Path('movies/birds.MOV')
+    # self.input_file = Path('movies/output.avi')
 
-    # How often to check for qr codes. Measured in #frames
-    self.qr_detection_frequency = 20
+    # QR detection algorithm
+    self.qr_detector = ZbarQRDetector()
+    # self.qr_detector = OpenCVDetector()
+
+    # Video file
+    self.video_cap = cv2.VideoCapture(str(self.input_file))
+    self.fps = self.video_cap.get(cv2.CAP_PROP_FPS)
+
+    # How often to check for qr codes. Measures in frames
+    # freq_sec = 0.7  # In seconds
+    freq_sec = 0.2  # In seconds
+    self.check_frame_frequency = int(freq_sec * self.fps)
 
     # Merges detections close in time. Measured in seconds
-    self.detection_squeeze_window = 3
+    n_sec = 3
+    self.detection_squeeze_window = n_sec * self.fps
 
     # self.show_video = False
     self.show_video = True
 
+    # Actions available
+    self.start_signal = ['start scene', 'start']
+    self.end_signal = ['end scene', 'stop']
+
 
 def main():
   config = anyfig.setup_config(default_config='Config')
+  print(config)
+  input_file = config.input_file
+  assert input_file.exists(), f'Wrong path to video: {input_file}'
 
-  cap = cv2.VideoCapture(str(config.input_file))
-  fps = cap.get(cv2.CAP_PROP_FPS)
-  qr_detections = find_detections(cap, fps, config)
+  qr_detections = find_detections(config)
 
   qr_detections = squeeze_detections(qr_detections,
-                                     config.detection_squeeze_window, fps)
-  split_video(qr_detections, config.input_file, fps)
+                                     config.detection_squeeze_window)
+
+  action_frames = format_detections(qr_detections, config)
+
+  print(f"Actions: {action_frames}")
+
+  split_video(action_frames, input_file, config.fps)
 
   cv2.waitKey(1)
-  cap.release()
+  config.video_cap.release()
   cv2.destroyAllWindows()
 
 
-def find_detections(cap, fps, config):
+def find_detections(config):
   frame_n = 0
   qr_detections = {}
+  video_cap = config.video_cap
+  detector = config.qr_detector
 
-  success, im = cap.read()
+  window_name = 'image'
+  cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
+  cv2.resizeWindow(window_name, 1280, 1024)
+  cv2.moveWindow(window_name, 20, 20)
+
+  success, im = video_cap.read()
   while success:
     frame_n += 1
-    success, im = cap.read()
 
-    if frame_n % config.qr_detection_frequency == 0:
-      qr_info = read_qr(im)
-      print(qr_info)
+    if frame_n % config.check_frame_frequency == 0:
+      qr_detection = detector.find_qr(im)
 
-      if qr_info:
-        qr_detections[frame_n] = qr_info[0].data.decode("utf-8")
+      if qr_detection['text']:
+        qr_detections[frame_n] = qr_detection['text']
 
       if config.show_video:
-        cv2.imshow('frame', im)
+        im = detector.draw_bounding_box(im, qr_detection)
+        cv2.imshow(window_name, im)
+      else:
+        print(qr_detection)
+
       k = cv2.waitKey(1)
+
+    success, im = video_cap.read()
 
   return qr_detections
 
 
-def read_qr(im):
-  return decode(im, symbols=[ZBarSymbol.QRCODE])
-
-
-def squeeze_detections(qr_detections, detection_squeeze_window, fps):
+def squeeze_detections(qr_detections, detection_squeeze_window):
   ''' Squeezes many detections into one '''
   last_detection_frame = -sys.maxsize
-  detection_window = detection_squeeze_window * fps
-
   squeezed_dets = {}
 
   print(list(qr_detections.keys()))
   for frame_n, qr_det in qr_detections.items():
 
-    if frame_n - last_detection_frame > detection_window:
+    if frame_n - last_detection_frame > detection_squeeze_window:
       squeezed_dets[frame_n] = qr_det
 
     last_detection_frame = frame_n
 
   print(list(squeezed_dets.keys()))
-  return format_detections(squeezed_dets)
+  return squeezed_dets
 
 
-def format_detections(qr_detections):
+def format_detections(qr_detections, config):
   action_frames = []
   start_frame, end_frame = None, None
   for frame, action in qr_detections.items():
-    if action == 'start scene':
+    if action in config.start_signal:
       start_frame = frame
-    if action == 'end scene' and start_frame:
+    if action in config.end_signal and start_frame:
       end_frame = frame
 
     if start_frame and end_frame:

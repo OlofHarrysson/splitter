@@ -1,3 +1,15 @@
+TODO
+Take input XML -> produce output XML
+Move to OPENCV QR code
+
+
+
+
+
+
+
+
+
 Have different options
 - QR code
 - Sound (good because sample rate is so high -> exact time)
