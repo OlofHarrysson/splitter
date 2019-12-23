@@ -8,6 +8,7 @@ from pathlib import Path
 import anyfig
 from signal_detectors import ZbarQRDetector, OpenCVDetector
 import numpy as np
+import json
 
 
 @anyfig.config_class
@@ -29,8 +30,8 @@ class Config():
     self.fps = self.video_cap.get(cv2.CAP_PROP_FPS)
 
     # How often to check for qr codes. Measures in frames
-    # freq_sec = 0.7  # In seconds
-    freq_sec = 0.2  # In seconds
+    freq_sec = 0.7  # In seconds
+    # freq_sec = 0.2  # In seconds
     self.check_frame_frequency = int(freq_sec * self.fps)
 
     # Merges detections close in time. Measured in seconds
@@ -60,7 +61,8 @@ def main():
 
   print(f"Actions: {action_frames}")
 
-  split_video(action_frames, input_file, config.fps)
+  split_info = split_video(action_frames, input_file, config.fps)
+  save_split_info(split_info, input_file)
 
   cv2.waitKey(1)
   config.video_cap.release()
@@ -135,6 +137,7 @@ def format_detections(qr_detections, config):
 
 
 def split_video(action_frames, input_file, fps):
+  split_info = {}
   for scene_index, (start_frame, end_frame) in enumerate(action_frames):
     scene_start = start_frame / fps
     duration = (end_frame - start_frame) / fps  # In seconds
@@ -146,6 +149,15 @@ def split_video(action_frames, input_file, fps):
     ]
     completed = subprocess.run(args, capture_output=True)
     print('returncode:', completed.returncode)
+    split_info[scene_index] = (scene_start, duration)
+
+  return split_info
+
+
+def save_split_info(split_info, filename):
+  data = dict(filename=str(filename), scenes=split_info)
+  with open('scene_splits.json', 'w') as outfile:
+    json.dump(data, outfile, indent=2)
 
 
 def clear_outputdir():

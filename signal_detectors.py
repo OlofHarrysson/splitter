@@ -7,20 +7,17 @@ import numpy as np
 
 
 class QR_Detector():
-  pass
-
   def draw_bounding_box(self, im, qr_detection):
     if qr_detection['text']:
       red_color = (0, 0, 255)
-      points = qr_detection['points']
+      points = qr_detection['points'].astype(np.int32)
 
-      im = cv2.polylines(im, [points.astype(np.int32)],
+      im = cv2.polylines(im, [points],
                          isClosed=True,
                          color=red_color,
                          thickness=4)
 
-      x = points[3][0][0]
-      y = points[3][0][1]
+      x, y = points[3][0][0], points[3][0][1]  # Point for top left
       cv2.putText(im, qr_detection['text'], (x, y - 10),
                   cv2.FONT_HERSHEY_SIMPLEX, 1.5, red_color, 2)
     return im
@@ -36,9 +33,6 @@ class OpenCVDetector(QR_Detector):
 
 
 class ZbarQRDetector(QR_Detector):
-  def __init__(self):
-    pass
-
   def find_qr(self, image):
     detection = decode(image, symbols=[ZBarSymbol.QRCODE])
     if not detection:

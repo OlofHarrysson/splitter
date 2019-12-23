@@ -1,6 +1,6 @@
 TODO
 Take input XML -> produce output XML
-Move to OPENCV QR code
+  Add keyword with duration to event. Also change event and keyword?
 
 
 
