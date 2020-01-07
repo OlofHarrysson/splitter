@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE fcpxml>
+
+<fcpxml version="1.8">
+    <resources>
+        <asset id="r1" name="home" uid="94B1C4D2A5319DE1CF5484B9251C8DE2" src="file:///Users/olof/Movies/split.fcpbundle/split/Original%20Media/home.avi" start="0s" duration="286/12s" hasVideo="1" format="r2">
+            <bookmark>Ym9vazgDAAAAAAQQMAAAAJWHuvkh/v8g4CuWaUmb54C09qEbepl7voXgYu0EFptkNAIAAAQAAAADAwAAABgAKAUAAAABAQAAVXNlcnMAAAAEAAAAAQEAAG9sb2YGAAAAAQEAAE1vdmllcwAADwAAAAEBAABzcGxpdC5mY3BidW5kbGUABQAAAAEBAABzcGxpdAAAAA4AAAABAQAAT3JpZ2luYWwgTWVkaWEAAAgAAAABAQAAaG9tZS5hdmkcAAAAAQYAABAAAAAgAAAALAAAADwAAABUAAAAZAAAAHwAAAAIAAAABAMAAJ1TAAAAAAAACAAAAAQDAADhjgUAAAAAAAgAAAAEAwAAEI8FAAAAAAAIAAAABAMAAMexGgAAAAAACAAAAAQDAADVsRoAAAAAAAgAAAAEAwAA57EaAAAAAAAIAAAABAMAAOqxGgAAAAAAHAAAAAEGAACwAAAAwAAAANAAAADgAAAA8AAAAAABAAAQAQAACAAAAAAEAABBwceA+YAAABgAAAABAgAAAQAAAAAAAAAPAAAAAAAAAAAAAAAAAAAACAAAAAQDAAAFAAAAAAAAAAQAAAADAwAA9QEAAAgAAAABCQAAZmlsZTovLy8MAAAAAQEAAE1hY2ludG9zaCBIRAgAAAAEAwAAAOAB4+gAAAAIAAAAAAQAAEHBuxkr2malJAAAAAEBAAA2QUZCNEVFMC1DNjlELTRCMEYtQUUxQy1ERTEyNjI4REI5NjQYAAAAAQIAAIEAAAABAAAA7xMAAAEAAAAAAAAAAAAAAAEAAAABAQAALwAAAAAAAAABBQAAzAAAAP7///8BAAAAAAAAABAAAAAEEAAAjAAAAAAAAAAFEAAAIAEAAAAAAAAQEAAAVAEAAAAAAABAEAAARAEAAAAAAAACIAAAIAIAAAAAAAAFIAAAkAEAAAAAAAAQIAAAoAEAAAAAAAARIAAA1AEAAAAAAAASIAAAtAEAAAAAAAATIAAAxAEAAAAAAAAgIAAAAAIAAAAAAAAwIAAALAIAAAAAAAABwAAAdAEAAAAAAAARwAAAIAAAAAAAAAASwAAAhAEAAAAAAAAQ0AAABAAAAAAAAAA=</bookmark>
+        </asset>
+        <format id="r2" frameDuration="50/600s" width="1280" height="720" colorSpace="1-1-1 (Rec. 709)"/>
+        <asset id="r3" name="park" uid="1CD40FF73701CB75421C4465AB78C9E8" src="file:///Users/olof/Movies/split.fcpbundle/split/Original%20Media/park.mov" start="0s" duration="37113/600s" hasVideo="1" format="r4" hasAudio="1" audioSources="1" audioChannels="2" audioRate="44100">
+            <bookmark>Ym9vazgDAAAAAAQQMAAAAImhjnRyjjcYxaafbZaE/HlCzkhyysHl8c5JqyBDSBHPNAIAAAQAAAADAwAAABgAKAUAAAABAQAAVXNlcnMAAAAEAAAAAQEAAG9sb2YGAAAAAQEAAE1vdmllcwAADwAAAAEBAABzcGxpdC5mY3BidW5kbGUABQAAAAEBAABzcGxpdAAAAA4AAAABAQAAT3JpZ2luYWwgTWVkaWEAAAgAAAABAQAAcGFyay5tb3YcAAAAAQYAABAAAAAgAAAALAAAADwAAABUAAAAZAAAAHwAAAAIAAAABAMAAJ1TAAAAAAAACAAAAAQDAADhjgUAAAAAAAgAAAAEAwAAEI8FAAAAAAAIAAAABAMAAMexGgAAAAAACAAAAAQDAADVsRoAAAAAAAgAAAAEAwAA57EaAAAAAAAIAAAABAMAAOuxGgAAAAAAHAAAAAEGAACwAAAAwAAAANAAAADgAAAA8AAAAAABAAAQAQAACAAAAAAEAABBwc36D4AAABgAAAABAgAAAQAAAAAAAAAPAAAAAAAAAAAAAAAAAAAACAAAAAQDAAAFAAAAAAAAAAQAAAADAwAA9QEAAAgAAAABCQAAZmlsZTovLy8MAAAAAQEAAE1hY2ludG9zaCBIRAgAAAAEAwAAAOAB4+gAAAAIAAAAAAQAAEHBuxkr2malJAAAAAEBAAA2QUZCNEVFMC1DNjlELTRCMEYtQUUxQy1ERTEyNjI4REI5NjQYAAAAAQIAAIEAAAABAAAA7xMAAAEAAAAAAAAAAAAAAAEAAAABAQAALwAAAAAAAAABBQAAzAAAAP7///8BAAAAAAAAABAAAAAEEAAAjAAAAAAAAAAFEAAAIAEAAAAAAAAQEAAAVAEAAAAAAABAEAAARAEAAAAAAAACIAAAIAIAAAAAAAAFIAAAkAEAAAAAAAAQIAAAoAEAAAAAAAARIAAA1AEAAAAAAAASIAAAtAEAAAAAAAATIAAAxAEAAAAAAAAgIAAAAAIAAAAAAAAwIAAALAIAAAAAAAABwAAAdAEAAAAAAAARwAAAIAAAAAAAAAASwAAAhAEAAAAAAAAQ0AAABAAAAAAAAAA=</bookmark>
+        </asset>
+        <format id="r4" name="FFVideoFormat1080p30" frameDuration="20/600s" width="1920" height="1080" colorSpace="1-1-1 (Rec. 709)"/>
+    </resources>
+    <library location="file:///Users/olof/Movies/split.fcpbundle/">
+        <event name="split" uid="E3F26F19-6584-4591-976E-6220A68A1573">
+            <asset-clip name="home2019-11-271" ref="r1" duration="14300/600s" format="r2" tcFormat="NDF" modDate="2019-12-28 11:08:21 +0100">
+                <note>split note boobs</note>
+                <keyword start="35/3s" duration="7300/600s" value="test"/>
+            </asset-clip>
+            <asset-clip name="park_recording_qrcode" ref="r3" duration="44535600/720000s" audioRole="dialogue" format="r4" tcFormat="NDF" modDate="2019-12-28 19:20:09 +0100">
+                <note>split boobs scene</note>
+                <keyword start="6s" duration="6s" value="scenes"/>
+                <keyword start="571/30s" duration="50000/3000s" value="test"/>
+            </asset-clip>
+            <project name="splitproject" uid="40523ED5-44C8-41C0-AD3F-5E8AD0D8717B" modDate="2019-12-28 19:13:04 +0100">
+                <sequence duration="107500/3000s" format="r4" tcStart="0s" tcFormat="NDF" audioLayout="stereo" audioRate="48k">
+                    <spine>
+                        <asset-clip name="park" offset="0s" ref="r3" duration="6s" start="6s" audioRole="dialogue" tcFormat="NDF">
+                            <note>split boobs scene</note>
+                            <keyword start="6s" duration="6s" value="scenes"/>
+                            <keyword start="571/30s" duration="50000/3000s" value="test"/>
+                        </asset-clip>
+                        <asset-clip name="home" offset="6s" ref="r1" duration="14300/600s" format="r2" tcFormat="NDF">
+                            <note>second note</note>
+                            <conform-rate scaleEnabled="0"/>
+                            <marker start="124/15s" duration="100/3000s" value="mark2" completed="0"/>
+                            <chapter-marker start="319/30s" duration="100/3000s" value="mark3" posterOffset="11/12s"/>
+                        </asset-clip>
+                        <asset-clip name="park" offset="89500/3000s" ref="r3" duration="6s" start="6s" audioRole="dialogue" tcFormat="NDF">
+                            <note>split boobs scene</note>
+                            <keyword start="6s" duration="6s" value="scenes"/>
+                            <keyword start="571/30s" duration="50000/3000s" value="test"/>
+                        </asset-clip>
+                    </spine>
+                </sequence>
+            </project>
+            <keyword-collection name="scenes"/>
+            <keyword-collection name="test"/>
+            <smart-collection name="filter" match="all">
+                <match-text rule="includes" value="split"/>
+            </smart-collection>
+        </event>
+    </library>
+</fcpxml>

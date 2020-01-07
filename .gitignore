@@ -6,3 +6,4 @@ saved/
 *.wav
 *.MOV
 music/
+speech_key.json

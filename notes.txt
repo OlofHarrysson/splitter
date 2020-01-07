@@ -2,8 +2,19 @@ TODO
 Take input XML -> produce output XML
   Add keyword with duration to event. Also change event and keyword?
 
+Make 1 smart collection for video tags. Can search in collection to filter for specific tags. Use notes to set a tag? Problem is that you cant see tags very visibly when browsing media
 
 
+Voice controlled
+
+Start and end clip - exported as keywords
+Add timestamped tag. Do it with marker
+
+Voice commands
+Debug commands - https://speechlogger.appspot.com/
+- Recording assistant. Video helper
+- Start/end clip
+- Add mark(s) *name*. Adds video
 
 
 
@@ -81,10 +92,6 @@ Pure post-processing options
 Dictating speech seems very important but already has a few big players
 Automatic tagging of video would be good. What tags to select?
 Automatically detect scene-repeats (duplicates) would be useful. What about scenes which are similar but not duplicates? Could give a draft that can be edited
-
-
-
-
 
 
 

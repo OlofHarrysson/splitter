@@ -1,7 +1,6 @@
 from PIL import Image
 import pyqrcode
 import cv2
-import aztec_code_generator
 import sys
 import subprocess
 from pathlib import Path
@@ -10,14 +9,16 @@ from signal_detectors import ZbarQRDetector, OpenCVDetector
 import numpy as np
 import json
 
+debug
+
 
 @anyfig.config_class
 class Config():
   def __init__(self):
     # self.input_file = Path('movies/work.mp4')
-    self.input_file = Path('movies/home.avi')
+    # self.input_file = Path('movies/home.avi')
     # self.input_file = Path('movies/intro1.mp4')
-    # self.input_file = Path('movies/park.MOV')
+    self.input_file = Path('movies/park.MOV')
     # self.input_file = Path('movies/birds.MOV')
     # self.input_file = Path('movies/output.avi')
 
