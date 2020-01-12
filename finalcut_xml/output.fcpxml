@@ -1,114 +1,23 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE fcpxml>
-
 <fcpxml version="1.8">
-    <resources>
-        <asset id="r1" name="home" uid="94B1C4D2A5319DE1CF5484B9251C8DE2" src="file:///Users/olof/Movies/split.fcpbundle/split/Original%20Media/home.avi" start="0s" duration="286/12s" hasVideo="1" format="r2">
-            <bookmark>Ym9vazgDAAAAAAQQMAAAAGs1uR2Y6rp21TTEvZKmtIkMF2aPC9aQCwMls+APBI8WNAIAAAQAAAADAwAAABgAKAUAAAABAQAAVXNlcnMAAAAEAAAAAQEAAG9sb2YGAAAAAQEAAE1vdmllcwAADwAAAAEBAABzcGxpdC5mY3BidW5kbGUABQAAAAEBAABzcGxpdAAAAA4AAAABAQAAT3JpZ2luYWwgTWVkaWEAAAgAAAABAQAAaG9tZS5hdmkcAAAAAQYAABAAAAAgAAAALAAAADwAAABUAAAAZAAAAHwAAAAIAAAABAMAAJ1TAAAAAAAACAAAAAQDAADhjgUAAAAAAAgAAAAEAwAAEI8FAAAAAAAIAAAABAMAAMexGgAAAAAACAAAAAQDAADVsRoAAAAAAAgAAAAEAwAA57EaAAAAAAAIAAAABAMAAOqxGgAAAAAAHAAAAAEGAACwAAAAwAAAANAAAADgAAAA8AAAAAABAAAQAQAACAAAAAAEAABBwceA+YAAABgAAAABAgAAAQAAAAAAAAAPAAAAAAAAAAAAAAAAAAAACAAAAAQDAAAFAAAAAAAAAAQAAAADAwAA9QEAAAgAAAABCQAAZmlsZTovLy8MAAAAAQEAAE1hY2ludG9zaCBIRAgAAAAEAwAAAOAB4+gAAAAIAAAAAAQAAEHBuxkr2malJAAAAAEBAAA2QUZCNEVFMC1DNjlELTRCMEYtQUUxQy1ERTEyNjI4REI5NjQYAAAAAQIAAIEAAAABAAAA7xMAAAEAAAAAAAAAAAAAAAEAAAABAQAALwAAAAAAAAABBQAAzAAAAP7///8BAAAAAAAAABAAAAAEEAAAjAAAAAAAAAAFEAAAIAEAAAAAAAAQEAAAVAEAAAAAAABAEAAARAEAAAAAAAACIAAAIAIAAAAAAAAFIAAAkAEAAAAAAAAQIAAAoAEAAAAAAAARIAAA1AEAAAAAAAASIAAAtAEAAAAAAAATIAAAxAEAAAAAAAAgIAAAAAIAAAAAAAAwIAAALAIAAAAAAAABwAAAdAEAAAAAAAARwAAAIAAAAAAAAAASwAAAhAEAAAAAAAAQ0AAABAAAAAAAAAA=</bookmark>
-        </asset>
-        <format id="r2" frameDuration="50/600s" width="1280" height="720" colorSpace="1-1-1 (Rec. 709)"/>
-        <format id="r3" name="FFVideoFormat1080p30" frameDuration="100/3000s" width="1920" height="1080" colorSpace="1-1-1 (Rec. 709)"/>
-        <asset id="r4" name="park" uid="1CD40FF73701CB75421C4465AB78C9E8" src="file:///Users/olof/Movies/split.fcpbundle/split/Original%20Media/park.mov" start="0s" duration="37113/600s" hasVideo="1" format="r3" hasAudio="1" audioSources="1" audioChannels="2" audioRate="44100">
-            <bookmark>Ym9vazgDAAAAAAQQMAAAAKGkuDjXbYtdJ581KOFedRnWlS+Yj/aN68uI39QEsAjhNAIAAAQAAAADAwAAABgAKAUAAAABAQAAVXNlcnMAAAAEAAAAAQEAAG9sb2YGAAAAAQEAAE1vdmllcwAADwAAAAEBAABzcGxpdC5mY3BidW5kbGUABQAAAAEBAABzcGxpdAAAAA4AAAABAQAAT3JpZ2luYWwgTWVkaWEAAAgAAAABAQAAcGFyay5tb3YcAAAAAQYAABAAAAAgAAAALAAAADwAAABUAAAAZAAAAHwAAAAIAAAABAMAAJ1TAAAAAAAACAAAAAQDAADhjgUAAAAAAAgAAAAEAwAAEI8FAAAAAAAIAAAABAMAAMexGgAAAAAACAAAAAQDAADVsRoAAAAAAAgAAAAEAwAA57EaAAAAAAAIAAAABAMAAOuxGgAAAAAAHAAAAAEGAACwAAAAwAAAANAAAADgAAAA8AAAAAABAAAQAQAACAAAAAAEAABBwc36D4AAABgAAAABAgAAAQAAAAAAAAAPAAAAAAAAAAAAAAAAAAAACAAAAAQDAAAFAAAAAAAAAAQAAAADAwAA9QEAAAgAAAABCQAAZmlsZTovLy8MAAAAAQEAAE1hY2ludG9zaCBIRAgAAAAEAwAAAOAB4+gAAAAIAAAAAAQAAEHBuxkr2malJAAAAAEBAAA2QUZCNEVFMC1DNjlELTRCMEYtQUUxQy1ERTEyNjI4REI5NjQYAAAAAQIAAIEAAAABAAAA7xMAAAEAAAAAAAAAAAAAAAEAAAABAQAALwAAAAAAAAABBQAAzAAAAP7///8BAAAAAAAAABAAAAAEEAAAjAAAAAAAAAAFEAAAIAEAAAAAAAAQEAAAVAEAAAAAAABAEAAARAEAAAAAAAACIAAAIAIAAAAAAAAFIAAAkAEAAAAAAAAQIAAAoAEAAAAAAAARIAAA1AEAAAAAAAASIAAAtAEAAAAAAAATIAAAxAEAAAAAAAAgIAAAAAIAAAAAAAAwIAAALAIAAAAAAAABwAAAdAEAAAAAAAARwAAAIAAAAAAAAAASwAAAhAEAAAAAAAAQ0AAABAAAAAAAAAA=</bookmark>
-        </asset>
-        <asset id="r5" name="out" uid="923F3D0EC70A3171ED929CCE7E90BA2F" src="file:///Users/olof/Movies/split.fcpbundle/split/Original%20Media/out.mov" start="0s" duration="61855/1000s" hasVideo="1" format="r3" hasAudio="1" audioSources="1" audioChannels="2" audioRate="44100">
-            <bookmark>Ym9vazgDAAAAAAQQMAAAAJtVkIZTvDgvHwsa/zrGW7vb182YrPWDhshPjW7JWx9eNAIAAAQAAAADAwAAABgAKAUAAAABAQAAVXNlcnMAAAAEAAAAAQEAAG9sb2YGAAAAAQEAAE1vdmllcwAADwAAAAEBAABzcGxpdC5mY3BidW5kbGUABQAAAAEBAABzcGxpdAAAAA4AAAABAQAAT3JpZ2luYWwgTWVkaWEAAAcAAAABAQAAb3V0Lm1vdgAcAAAAAQYAABAAAAAgAAAALAAAADwAAABUAAAAZAAAAHwAAAAIAAAABAMAAJ1TAAAAAAAACAAAAAQDAADhjgUAAAAAAAgAAAAEAwAAEI8FAAAAAAAIAAAABAMAAMexGgAAAAAACAAAAAQDAADVsRoAAAAAAAgAAAAEAwAA57EaAAAAAAAIAAAABAMAANvJHAAAAAAAHAAAAAEGAACwAAAAwAAAANAAAADgAAAA8AAAAAABAAAQAQAACAAAAAAEAABBwd/ytQsX+BgAAAABAgAAAQAAAAAAAAAPAAAAAAAAAAAAAAAAAAAACAAAAAQDAAAFAAAAAAAAAAQAAAADAwAA9QEAAAgAAAABCQAAZmlsZTovLy8MAAAAAQEAAE1hY2ludG9zaCBIRAgAAAAEAwAAAOAB4+gAAAAIAAAAAAQAAEHBuxkr2malJAAAAAEBAAA2QUZCNEVFMC1DNjlELTRCMEYtQUUxQy1ERTEyNjI4REI5NjQYAAAAAQIAAIEAAAABAAAA7xMAAAEAAAAAAAAAAAAAAAEAAAABAQAALwAAAAAAAAABBQAAzAAAAP7///8BAAAAAAAAABAAAAAEEAAAjAAAAAAAAAAFEAAAIAEAAAAAAAAQEAAAVAEAAAAAAABAEAAARAEAAAAAAAACIAAAIAIAAAAAAAAFIAAAkAEAAAAAAAAQIAAAoAEAAAAAAAARIAAA1AEAAAAAAAASIAAAtAEAAAAAAAATIAAAxAEAAAAAAAAgIAAAAAIAAAAAAAAwIAAALAIAAAAAAAABwAAAdAEAAAAAAAARwAAAIAAAAAAAAAASwAAAhAEAAAAAAAAQ0AAABAAAAAAAAAA=</bookmark>
-        </asset>
-        <asset id="r6" name="SampleVideo_640x360_1mb" uid="1219D82E1CDDDA391CFE4289DC7A5C9E" src="file:///Users/olof/Movies/split.fcpbundle/split/Original%20Media/SampleVideo_640x360_1mb.mp4" start="0s" duration="6400/1000s" hasVideo="1" format="r7" hasAudio="1" audioSources="1" audioChannels="6" audioRate="48000">
-            <bookmark>Ym9va0wDAAAAAAQQMAAAANVc1M4usPsnSI418UZQvGr4q4z1e6frV1ZhzBVABMqySAIAAAQAAAADAwAAABgAKAUAAAABAQAAVXNlcnMAAAAEAAAAAQEAAG9sb2YGAAAAAQEAAE1vdmllcwAADwAAAAEBAABzcGxpdC5mY3BidW5kbGUABQAAAAEBAABzcGxpdAAAAA4AAAABAQAAT3JpZ2luYWwgTWVkaWEAABsAAAABAQAAU2FtcGxlVmlkZW9fNjQweDM2MF8xbWIubXA0ABwAAAABBgAAEAAAACAAAAAsAAAAPAAAAFQAAABkAAAAfAAAAAgAAAAEAwAAnVMAAAAAAAAIAAAABAMAAOGOBQAAAAAACAAAAAQDAAAQjwUAAAAAAAgAAAAEAwAAx7EaAAAAAAAIAAAABAMAANWxGgAAAAAACAAAAAQDAADnsRoAAAAAAAgAAAAEAwAA9MgcAAAAAAAcAAAAAQYAAMQAAADUAAAA5AAAAPQAAAAEAQAAFAEAACQBAAAIAAAAAAQAAEHByN26gAAAGAAAAAECAAABAAAAAAAAAA8AAAAAAAAAAAAAAAAAAAAIAAAABAMAAAUAAAAAAAAABAAAAAMDAAD1AQAACAAAAAEJAABmaWxlOi8vLwwAAAABAQAATWFjaW50b3NoIEhECAAAAAQDAAAA4AHj6AAAAAgAAAAABAAAQcG7GSvaZqUkAAAAAQEAADZBRkI0RUUwLUM2OUQtNEIwRi1BRTFDLURFMTI2MjhEQjk2NBgAAAABAgAAgQAAAAEAAADvEwAAAQAAAAAAAAAAAAAAAQAAAAEBAAAvAAAAAAAAAAEFAADMAAAA/v///wEAAAAAAAAAEAAAAAQQAACgAAAAAAAAAAUQAAA0AQAAAAAAABAQAABoAQAAAAAAAEAQAABYAQAAAAAAAAIgAAA0AgAAAAAAAAUgAACkAQAAAAAAABAgAAC0AQAAAAAAABEgAADoAQAAAAAAABIgAADIAQAAAAAAABMgAADYAQAAAAAAACAgAAAUAgAAAAAAADAgAABAAgAAAAAAAAHAAACIAQAAAAAAABHAAAAgAAAAAAAAABLAAACYAQAAAAAAABDQAAAEAAAAAAAAAA==</bookmark>
-        </asset>
-        <format id="r7" frameDuration="512/12800s" width="640" height="368" colorSpace="6-1-6 (Rec. 601 (NTSC))"/>
-        <media id="r8" name="Untitled Compound Clip" uid="4JHYdJagRmGvuLtoh16Aqg" modDate="2020-01-04 09:39:18 +0100">
-            <sequence duration="1347200/96000s" format="r3" tcStart="0s" tcFormat="NDF">
-                <spine>
-                    <asset-clip name="out" offset="0s" ref="r5" duration="6500/3000s" start="162600/3000s" audioRole="dialogue" tcFormat="NDF"/>
-                    <asset-clip name="out" offset="6500/3000s" ref="r5" duration="524800/96000s" start="169100/3000s" audioRole="dialogue" tcFormat="NDF"/>
-                    <asset-clip name="SampleVideo_640x360_1mb" offset="732800/96000s" ref="r6" duration="19200/3000s" audioRole="dialogue" format="r7" tcFormat="NDF">
-                        <conform-rate srcFrameRate="25" scaleEnabled="0"/>
-                        <keyword start="0s" duration="81920/12800s" value="bunny, split"/>
-                        <audio-channel-source role="effects.effects-1" srcCh="1, 2, 3, 4, 5, 6"/>
-                    </asset-clip>
-                </spine>
-            </sequence>
-        </media>
-    </resources>
-    <library location="file:///Users/olof/Movies/split.fcpbundle/">
-        <event name="split" uid="E3F26F19-6584-4591-976E-6220A68A1573">
-            <asset-clip name="home2019-11-271" ref="r1" duration="14300/600s" videoRole="splitter role" format="r2" tcFormat="NDF" modDate="2020-01-04 08:38:09 +0100">
-                <note>split note boobs</note>
-                <keyword start="35/3s" duration="7300/600s" value="test"/>
-            </asset-clip>
-            <project name="myproject" uid="40523ED5-44C8-41C0-AD3F-5E8AD0D8717B" modDate="2020-01-04 09:46:16 +0100">
-                <sequence duration="364500/3000s" format="r3" tcStart="0s" tcFormat="NDF" audioLayout="stereo" audioRate="48k">
-                    <spine>
-                        <asset-clip name="park" offset="0s" ref="r4" duration="6s" start="6s" audioRole="dialogue" tcFormat="NDF">
-                            <note>split boobs scene</note>
-                            <keyword start="6s" duration="6s" value="scenes"/>
-                            <keyword start="571/30s" duration="50000/3000s" value="test"/>
-                        </asset-clip>
-                        <asset-clip name="home" offset="6s" ref="r1" duration="14300/600s" videoRole="titles" format="r2" tcFormat="NDF">
-                            <note>second note</note>
-                            <conform-rate scaleEnabled="0"/>
-                            <caption name="Suuumi" lane="1" offset="8900/3000s" duration="62600/3000s" start="3600s" enabled="0" role="iTT?captionFormat=ITT.en">
-                                <text placement="bottom">
-                                    <text-style ref="ts1">Suuumi</text-style>
-                                </text>
-                                <text-style-def id="ts1">
-                                    <text-style font=".AppleSystemUIFont" fontSize="13" fontFace="Regular" fontColor="1 1 1 1" backgroundColor="0 0 0 1"/>
-                                </text-style-def>
-                            </caption>
-                            <marker start="124/15s" duration="100/3000s" value="mark2" completed="0"/>
-                            <chapter-marker start="319/30s" duration="100/3000s" value="mark3" posterOffset="11/12s"/>
-                        </asset-clip>
-                        <asset-clip name="park" offset="89500/3000s" ref="r4" duration="6s" start="6s" audioRole="dialogue" tcFormat="NDF">
-                            <note>split boobs scene</note>
-                            <keyword start="6s" duration="6s" value="scenes"/>
-                            <keyword start="571/30s" duration="50000/3000s" value="test"/>
-                        </asset-clip>
-                        <asset-clip name="home2019-11-271" offset="107500/3000s" ref="r1" duration="14300/600s" videoRole="splitter role" format="r2" tcFormat="NDF">
-                            <note>split note boobs</note>
-                            <conform-rate scaleEnabled="0"/>
-                            <keyword start="35/3s" duration="7300/600s" value="test"/>
-                        </asset-clip>
-                        <asset-clip name="park_recording_qrcode_new" offset="179000/3000s" ref="r4" duration="185500/3000s" audioRole="dialogue" videoRole="titles" tcFormat="NDF">
-                            <note>split boobs scene</note>
-                            <keyword start="6s" duration="6s" value="scenes"/>
-                            <keyword start="571/30s" duration="50000/3000s" value="test"/>
-                            <audio-channel-source role="split audio.split audio-1" srcCh="1, 2"/>
-                        </asset-clip>
-                    </spine>
-                </sequence>
-            </project>
-            <asset-clip name="out" ref="r5" duration="44535600/720000s" audioRole="dialogue" videoRole="splitter role" format="r3" tcFormat="NDF" modDate="2020-01-04 09:40:47 +0100">
-                <marker start="319/15s" duration="640/19200s" value="Marker 1"/>
-                <audio-channel-source role="split audio.split audio-1" srcCh="1, 2"/>
-            </asset-clip>
-            <asset-clip name="park_recording_qrcode_new" ref="r4" duration="44535600/720000s" audioRole="dialogue" videoRole="titles" format="r3" tcFormat="NDF" modDate="2020-01-04 09:45:35 +0100">
-                <note>split boobs scene</note>
-                <keyword start="6s" duration="6s" value="scenes"/>
-                <keyword start="571/30s" duration="50000/3000s" value="test"/>
-                <marker start="171/5s" duration="100/3000s" value="split"/>
-                <audio-channel-source role="split audio.split audio-1" srcCh="1, 2"/>
-            </asset-clip>
-            <asset-clip name="SampleVideo_640x360_1mb" ref="r6" duration="81920/12800s" audioRole="dialogue" format="r7" tcFormat="NDF" modDate="2020-01-03 22:00:24 +0100">
-                <keyword start="0s" duration="81920/12800s" value="bunny, split"/>
-            </asset-clip>
-            <ref-clip name="Untitled Compound Clip" ref="r8" duration="1347200/96000s" useAudioSubroles="1" modDate="2020-01-04 09:39:18 +0100">
-                <note>split</note>
-            </ref-clip>
-            <keyword-collection name="test"/>
-            <smart-collection name="sumee" match="all">
-                <match-text rule="includes" value="biatch"/>
-            </smart-collection>
-            <collection-folder name="splitter">
-                <smart-collection name="_all_tags_searchable" match="any">
-                    <match-text rule="includes" value="split"/>
-                </smart-collection>
-                <keyword-collection name="bunny"/>
-                <keyword-collection name="scenes"/>
-                <keyword-collection name="split"/>
-            </collection-folder>
-            <keyword-collection name="abc"/>
-        </event>
-    </library>
+  <resources>
+    <asset id="r1" name="walk" uid="475D421C63CDBDFAF1CF74A59CB7CED0" src="file:///Users/olof/Movies/split.fcpbundle/tochange/Original%20Media/walk.mp4" start="0s" duration="79442/1000s" hasVideo="1" format="r2" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <bookmark>Ym9vazgDAAAAAAQQMAAAAKqfn+JREXgLInBw/g6ZkZi5Ap3H//S8AdZ3rw3oO4n2NAIAAAQAAAADAwAAABgAKAUAAAABAQAAVXNlcnMAAAAEAAAAAQEAAG9sb2YGAAAAAQEAAE1vdmllcwAADwAAAAEBAABzcGxpdC5mY3BidW5kbGUACAAAAAEBAAB0b2NoYW5nZQ4AAAABAQAAT3JpZ2luYWwgTWVkaWEAAAgAAAABAQAAd2Fsay5tcDQcAAAAAQYAABAAAAAgAAAALAAAADwAAABUAAAAZAAAAHwAAAAIAAAABAMAAJ1TAAAAAAAACAAAAAQDAADhjgUAAAAAAAgAAAAEAwAAEI8FAAAAAAAIAAAABAMAAMexGgAAAAAACAAAAAQDAAB6NR4AAAAAAAgAAAAEAwAAKTgeAAAAAAAIAAAABAMAACs4HgAAAAAAHAAAAAEGAACwAAAAwAAAANAAAADgAAAA8AAAAAABAAAQAQAACAAAAAAEAABBweUP02EBHBgAAAABAgAAAQAAAAAAAAAPAAAAAAAAAAAAAAAAAAAACAAAAAQDAAAFAAAAAAAAAAQAAAADAwAA9QEAAAgAAAABCQAAZmlsZTovLy8MAAAAAQEAAE1hY2ludG9zaCBIRAgAAAAEAwAAAOAB4+gAAAAIAAAAAAQAAEHBuxkr2malJAAAAAEBAAA2QUZCNEVFMC1DNjlELTRCMEYtQUUxQy1ERTEyNjI4REI5NjQYAAAAAQIAAIEAAAABAAAA7xMAAAEAAAAAAAAAAAAAAAEAAAABAQAALwAAAAAAAAABBQAAzAAAAP7///8BAAAAAAAAABAAAAAEEAAAjAAAAAAAAAAFEAAAIAEAAAAAAAAQEAAAVAEAAAAAAABAEAAARAEAAAAAAAACIAAAIAIAAAAAAAAFIAAAkAEAAAAAAAAQIAAAoAEAAAAAAAARIAAA1AEAAAAAAAASIAAAtAEAAAAAAAATIAAAxAEAAAAAAAAgIAAAAAIAAAAAAAAwIAAALAIAAAAAAAABwAAAdAEAAAAAAAARwAAAIAAAAAAAAAASwAAAhAEAAAAAAAAQ0AAABAAAAAAAAAA=</bookmark>
+    </asset>
+    <format id="r2" frameDuration="2996/90000s" width="1080" height="1920" colorSpace="1-1-1 (Rec. 709)"/>
+  </resources>
+  <library location="file:///Users/olof/Movies/split.fcpbundle/">
+    <event name="tochange" uid="AA120E97-4631-4B1D-BE1A-DB7650D6D35E">
+      <asset-clip name="walk" ref="r1" duration="57198240/720000s" audioRole="dialogue" format="r2" tcFormat="NDF" modDate="2020-01-11 16:23:04 +0100">
+        <keyword start="0s" duration="30s" value="videohelper clips"/>
+        <keyword start="45s" duration="25s" value="videohelper clips"/>
+        <marker start="60s" duration="1s" value="videohelper poop"/>
+        <marker start="45s" duration="1s" value="videohelper mymarker"/>
+      </asset-clip>
+      <smart-collection name="videohelper markers" match="all">
+        <match-text rule="includes" value="videohelper"/>
+        <match-text enabled="0" rule="includes" value="marker"/>
+      </smart-collection>
+    </event>
+  </library>
 </fcpxml>

@@ -66,47 +66,71 @@ class GoogleSpeechRecognition():
     # # phrase -> variants
     command_format = namedtuple('Command', 'command command_variant')
     self.commands = []
-    self.commands.append(command_format('videohelper', 'videohelper'))
-    self.commands.append(command_format('videohelper', 'video helper'))
-    self.commands.append(command_format('startclip', 'start clip'))
-    self.commands.append(command_format('endclip', 'end clip'))
-    self.commands.append(command_format('markclip', 'mark clip'))
+    # self.commands.append(command_format(Commands.wakeword, 'videohelper'))
+    self.commands.append(command_format(Commands.wakeword, 'video helper'))
+    self.commands.append(command_format(Commands.startclip, 'start clip'))
+    self.commands.append(command_format(Commands.endclip, 'end clip'))
+    # self.commands.append(command_format(Commands.placemarker, 'place marker'))
+    self.commands.append(command_format(Commands.placemarker, 'add marker'))
+    self.commands.append(command_format(Commands.placemarker, 'add markers'))
 
     self.word_format = namedtuple('Word', 'text start_time end_time')
 
   def find_actions(self, audio):
     # words = self.transcribe_audio(audio)
-    words = ['hej', 'video', 'helper', 'start', 'clip', 'videohelper']
+    words = 'hej video helper start clip video helper end clip nothatspodracing video helper add marker poop what video helper start clip hej det är test video helper end clip this is another video helper add marker mymarker test stop this'.split(
+    )
+
     words = [self.word_format(w, 0, 1) for w in words]
     words = self.format_transcription(words)
 
     index2word = {i: w for i, w in enumerate(words)}
-    word2indecies = defaultdict(list)
-    {word2indecies[w].append(i)
-     for i, w in enumerate(words)}  # TODO check if phrase
-    print(words)
-    qwe
+    command2index = defaultdict(list)
+    for ind, word in index2word.items():
+      if isinstance(word.text, Commands):
+        command2index[word.text].append(ind)
 
-    # keyword_phrases
-    # videohelper start clip, vh add mark, vh end clip
-    # actions, startclip, endclip, marker
+    print(command2index)
 
-    def get_next_action(i):
-      action = {}
-      action_text = words[i + 1].text + words[i + 2].text
-      if action_text == 'startclip':  # TODO
-        action_type = 'clip'
-
+    # print(index2command)
     actions = defaultdict(list)
-    for ind, word in words.items():
-      if word.text in self.phrases['wake_words']:
-        # print(word)
-        action = get_next_action(ind)
-        actions[action.type] = action
-        print(action)
+    for wake_word_ind in command2index[Commands.wakeword]:
+      wake_word = index2word[wake_word_ind]
+      command_word = index2word[wake_word_ind + 1]
+
+      if command_word.text == Commands.placemarker:
+        marker_word = index2word[wake_word_ind + 2]
+        action = dict(time=command_word.start_time, name=marker_word.text)
+        actions[command_word.text].append(action)
+
+      if command_word.text == Commands.startclip:
+        action = dict(time=command_word.start_time)
+        actions[command_word.text].append(action)
+
+      if command_word.text == Commands.endclip:
+        action = dict(time=command_word.end_time)
+        actions[command_word.text].append(action)
+
+    # for a, v in actions.items():
+    #   print(a, v)
+
+    # print(actions[Commands.startclip])
+    # print(actions[Commands.endclip])
+    # qwe
+
+    formated_actions = defaultdict(list)
+    for start_clip, end_clip in zip(actions[Commands.startclip],
+                                    actions[Commands.endclip]):
+      action = dict(start_time=start_clip['time'], end_time=end_clip['time'])
+      formated_actions['clips'].append(action)
+
+    # Dict. Clips=[...], markers=[...]
+    formated_actions['markers'] = actions[Commands.placemarker]
+    return formated_actions
 
   def format_transcription(self, words):
     ''' Changes the occurances of video helper to videohelper '''
+    # TODO: Move away from string. Placeholder doesn't work video one word commands (nor three I guess)
     placeholder = '!placeholder!'
     text = ' '.join([w.text for w in words])
     for command, command_alternative in self.commands:
@@ -116,6 +140,9 @@ class GoogleSpeechRecognition():
     formated_words = []
     for w, t in zip(words, text):
       if t != placeholder:
+        if t.startswith('Commands.'):  # TODO: Can I have it without string?
+          t = eval(t)
+
         formated_words.append(self.word_format(t, w.start_time, w.end_time))
 
     return formated_words
@@ -154,3 +181,15 @@ class GoogleSpeechRecognition():
       content = audio_file.read()
       audio = types.RecognitionAudio(content=content)
     return audio
+
+
+from enum import Enum, unique, auto
+
+
+@unique
+class Commands(Enum):
+  # videohelper = auto()
+  wakeword = auto()  # TODO I want wakeword with value videohelper?
+  startclip = auto()
+  endclip = auto()
+  placemarker = auto()

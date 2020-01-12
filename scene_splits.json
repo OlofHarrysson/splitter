@@ -1,9 +1,25 @@
 {
-  "filename": "movies/park.MOV",
-  "scenes": {
-    "0": [
-      22.019579288025888,
-      10.008899676375405
+  "filename": "music/walk.wav",
+  "xml_info": {
+    "clips": [
+      {
+        "start_time": 0,
+        "end_time": 30
+      },
+      {
+        "start_time": 45,
+        "end_time": 25
+      }
+    ],
+    "markers": [
+      {
+        "time": 60,
+        "name": "poop"
+      },
+      {
+        "time": 45,
+        "name": "mymarker"
+      }
     ]
   }
 }

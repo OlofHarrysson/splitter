@@ -10,12 +10,14 @@ Voice controlled
 Start and end clip - exported as keywords
 Add timestamped tag. Do it with marker
 
+Would also work for podcasts
+
+
 Voice commands
 Debug commands - https://speechlogger.appspot.com/
 - Recording assistant. Video helper
 - Start/end clip
 - Add mark(s) *name*. Adds video
-
 
 
 
