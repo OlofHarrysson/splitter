@@ -1,8 +1,6 @@
 TODO
-Take input XML -> produce output XML
-  Add keyword with duration to event. Also change event and keyword?
-
-Make 1 smart collection for video tags. Can search in collection to filter for specific tags. Use notes to set a tag? Problem is that you cant see tags very visibly when browsing media
+Make it work on a folder and/or file of videos.
+Handle mp4 files. Create temp .wav?
 
 
 Voice controlled
@@ -20,7 +18,8 @@ Debug commands - https://speechlogger.appspot.com/
 - Add mark(s) *name*. Adds video
 
 
-
+Long term
+- Workflow Extension - plugin for final cut. Seems like you have to collaborate with apple?
 
 
 Have different options

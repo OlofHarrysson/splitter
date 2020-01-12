@@ -13,6 +13,8 @@ from google.cloud import speech_v1p1beta1 as speech
 from google.cloud.speech_v1p1beta1 import enums
 from google.cloud.speech_v1p1beta1 import types
 
+from fake_data import get_fake_words
+
 
 class QR_Detector():
   def draw_bounding_box(self, im, qr_detection):
@@ -56,33 +58,28 @@ class GoogleSpeechRecognition():
   def __init__(self):
     self.client = speech.SpeechClient()
 
-    # wake_words = ['video helper', 'videohelper']
-    # clip_words = ['start clip', 'end clip']
-    # marker_words = ['add mark']
-    # self.phrases = dict(wake_words=wake_words,
-    #                     clip_words=clip_words,
-    #                     marker_words=marker_words)
-
-    # # phrase -> variants
     command_format = namedtuple('Command', 'command command_variant')
     self.commands = []
-    # self.commands.append(command_format(Commands.wakeword, 'videohelper'))
+    self.commands.append(command_format(Commands.wakeword, 'videohelper'))
     self.commands.append(command_format(Commands.wakeword, 'video helper'))
     self.commands.append(command_format(Commands.startclip, 'start clip'))
     self.commands.append(command_format(Commands.endclip, 'end clip'))
-    # self.commands.append(command_format(Commands.placemarker, 'place marker'))
-    self.commands.append(command_format(Commands.placemarker, 'add marker'))
+    self.commands.append(command_format(Commands.endclip, 'stop clip'))
     self.commands.append(command_format(Commands.placemarker, 'add markers'))
+    self.commands.append(command_format(Commands.placemarker, 'add marker'))
 
     self.word_format = namedtuple('Word', 'text start_time end_time')
 
   def find_actions(self, audio):
     # words = self.transcribe_audio(audio)
-    words = 'hej video helper start clip video helper end clip nothatspodracing video helper add marker poop what video helper start clip hej det är test video helper end clip this is another video helper add marker mymarker test stop this'.split(
-    )
+    words = get_fake_words()
 
-    words = [self.word_format(w, 0, 1) for w in words]
+    # text = [w.text for w in words]
+    # print(text)
+
     words = self.format_transcription(words)
+    # text = [w.text for w in words]
+    # print(text)
 
     index2word = {i: w for i, w in enumerate(words)}
     command2index = defaultdict(list)
@@ -90,9 +87,6 @@ class GoogleSpeechRecognition():
       if isinstance(word.text, Commands):
         command2index[word.text].append(ind)
 
-    print(command2index)
-
-    # print(index2command)
     actions = defaultdict(list)
     for wake_word_ind in command2index[Commands.wakeword]:
       wake_word = index2word[wake_word_ind]
@@ -100,7 +94,7 @@ class GoogleSpeechRecognition():
 
       if command_word.text == Commands.placemarker:
         marker_word = index2word[wake_word_ind + 2]
-        action = dict(time=command_word.start_time, name=marker_word.text)
+        action = dict(time=marker_word.start_time, name=marker_word.text)
         actions[command_word.text].append(action)
 
       if command_word.text == Commands.startclip:
@@ -111,25 +105,21 @@ class GoogleSpeechRecognition():
         action = dict(time=command_word.end_time)
         actions[command_word.text].append(action)
 
-    # for a, v in actions.items():
-    #   print(a, v)
-
-    # print(actions[Commands.startclip])
-    # print(actions[Commands.endclip])
-    # qwe
-
+    # TODO: Try to match uneven lengths of start/end
     formated_actions = defaultdict(list)
     for start_clip, end_clip in zip(actions[Commands.startclip],
                                     actions[Commands.endclip]):
-      action = dict(start_time=start_clip['time'], end_time=end_clip['time'])
+      action = dict(start_time=start_clip['time'],
+                    end_time=end_clip['time'],
+                    duration=end_clip['time'] - start_clip['time'])
       formated_actions['clips'].append(action)
 
-    # Dict. Clips=[...], markers=[...]
     formated_actions['markers'] = actions[Commands.placemarker]
     return formated_actions
 
   def format_transcription(self, words):
     ''' Changes the occurances of video helper to videohelper '''
+
     # TODO: Move away from string. Placeholder doesn't work video one word commands (nor three I guess)
     placeholder = '!placeholder!'
     text = ' '.join([w.text for w in words])
@@ -140,7 +130,7 @@ class GoogleSpeechRecognition():
     formated_words = []
     for w, t in zip(words, text):
       if t != placeholder:
-        if t.startswith('Commands.'):  # TODO: Can I have it without string?
+        if t.startswith('Commands.'):
           t = eval(t)
 
         formated_words.append(self.word_format(t, w.start_time, w.end_time))
@@ -148,14 +138,14 @@ class GoogleSpeechRecognition():
     return formated_words
 
   def transcribe_audio(self, audio):
-    phrases = list(itertools.chain.from_iterable(self.phrases.values()))
+    phrases = [c.command_variant for c in self.commands]
     config = types.RecognitionConfig(
       encoding=enums.RecognitionConfig.AudioEncoding.LINEAR16,
       language_code='en-US',
       audio_channel_count=2,
       enable_word_time_offsets=True,
       model='video',
-      speech_contexts=[dict(phrases=self.phrases, boost=20)])
+      speech_contexts=[dict(phrases=phrases, boost=20)])
 
     operation = self.client.long_running_recognize(config, audio)
 
@@ -183,13 +173,12 @@ class GoogleSpeechRecognition():
     return audio
 
 
-from enum import Enum, unique, auto
+import enum
 
 
-@unique
-class Commands(Enum):
-  # videohelper = auto()
-  wakeword = auto()  # TODO I want wakeword with value videohelper?
-  startclip = auto()
-  endclip = auto()
-  placemarker = auto()
+@enum.unique
+class Commands(enum.Enum):
+  wakeword = enum.auto()  # TODO I want wakeword with value videohelper?
+  startclip = enum.auto()
+  endclip = enum.auto()
+  placemarker = enum.auto()

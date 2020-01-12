@@ -6,8 +6,10 @@ import signal_detectors
 @anyfig.config_class
 class Config():
   def __init__(self):
-    self.data_file = 'music/walk.wav'
+    # self.data_file = 'music/walk.wav'
+    # self.data_file = 'walk.aac'
     # self.data_file = 'gs://splitter-speechtotext/park.wav'
+    self.data_file = 'gs://splitter-speechtotext/walk.wav'
     self.recognizer = signal_detectors.GoogleSpeechRecognition()
 
 

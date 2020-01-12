@@ -2,6 +2,7 @@ from pathlib import Path
 import anyfig
 import json
 from lxml import etree
+import subprocess
 
 import xml_utils
 
@@ -33,17 +34,24 @@ def main():
   for event in events:
     event.append(smart_collection)
 
-  # assert clip_name in clip.attrib['name'] # TODO:
+  # TODO: Check if filename exists in final cut
   xml = config.scene_splits['xml_info']
   for clip in root.iter('asset-clip'):
     if clip.attrib['name'] == clip_name:
       keywords = get_clips(xml['clips'])
-      xml_utils.add_children(clip, children=keywords)
+      clip = xml_utils.add_children(clip, children=keywords)
 
       markers = get_markers(xml['markers'])
-      xml_utils.add_children(clip, children=markers)
+      clip = xml_utils.add_children(clip, children=markers)
 
   xml_utils.save_xml(tree, str(config.outfile))
+  send_xml_to_finalcut(config.outfile.resolve())
+
+
+def send_xml_to_finalcut(xml_path):
+  args = ['osascript', 'finalcut_integration/send_data.scpt', xml_path]
+  completed = subprocess.run(args, capture_output=True)
+  print('returncode:', completed.returncode)
 
 
 def create_smart_collection():
@@ -73,8 +81,7 @@ def get_markers(markers_json):
 def get_clips(clips_json):
   keywords = []
   for clip_json in clips_json:
-    start, duration = clip_json['start_time'], clip_json['end_time']
-    # TODO: Add duration into json
+    start, duration = clip_json['start_time'], clip_json['duration']
 
     attrs = dict(start=f'{start}s',
                  duration=f'{duration}s',
