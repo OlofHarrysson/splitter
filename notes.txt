@@ -1,6 +1,5 @@
 TODO
-Make it work on a folder and/or file of videos.
-Handle mp4 files. Create temp .wav?
+Point to exported xml file. Go through raw-files, create .wavs, analyze and create new output xml, send to final cut.
 
 
 Voice controlled

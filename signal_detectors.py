@@ -6,6 +6,8 @@ from shapely.geometry import MultiPoint
 import numpy as np
 from collections import namedtuple, defaultdict
 import itertools
+from pathlib import Path
+import subprocess
 
 import io
 import os
@@ -163,14 +165,44 @@ class GoogleSpeechRecognition():
     return words
 
   def prepare_data(self, path):
-    if str(path).startswith('gs://'):
-      audio = {"uri": path}
-      return audio
+    path = path.replace('file://', '').replace('%20', ' ')
+    path = Path(path)
+    assert path.exists(), f"File {path} doesn't exist"
 
-    with io.open(path, 'rb') as audio_file:
-      content = audio_file.read()
-      audio = types.RecognitionAudio(content=content)
+    # create .wav file
+
+    tmp_audio_file = f'/tmp/{path.stem}.wav'
+    cloud_path = Path(tmp_audio_file)
+    args = ['ffmpeg', '-i', str(path), tmp_audio_file, '-y']
+    completed = subprocess.run(args, capture_output=True)
+
+    if not blob_exists('splitter-speechtotext', cloud_path.name):
+      print(f"Uploading file to {cloud_path.name}...")
+
+      upload_blob('splitter-speechtotext', tmp_audio_file, cloud_path.name)
+
+    uri_path = 'gs://splitter-speechtotext/' + cloud_path.name
+    audio = {"uri": uri_path}
     return audio
+
+
+from google.cloud import storage
+
+
+def upload_blob(bucket_name, source_file_name, destination_blob_name):
+  ''' Uploads a file to the bucket '''
+  storage_client = storage.Client()
+  bucket = storage_client.get_bucket(bucket_name)
+  blob = bucket.blob(destination_blob_name)
+
+  blob.upload_from_filename(source_file_name)
+
+
+def blob_exists(bucket_name, filename):
+  client = storage.Client()
+  bucket = client.get_bucket(bucket_name)
+  blob = bucket.blob(filename)
+  return blob.exists()
 
 
 import enum

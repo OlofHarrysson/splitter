@@ -6,27 +6,26 @@ import subprocess
 
 import xml_utils
 
+# @anyfig.config_class
+# class Config():
+#   def __init__(self):
+#     self.scene_input_file = Path('scene_splits.json')
+#     # self.xml_input_file = Path('finalcut_xml/home_split.fcpxml')
+#     self.xml_input_file = Path('finalcut_xml/tochange.fcpxml')
+#     self.outfile = Path('finalcut_xml/output.fcpxml')
 
-@anyfig.config_class
-class Config():
-  def __init__(self):
-    self.scene_input_file = Path('scene_splits.json')
-    # self.xml_input_file = Path('finalcut_xml/home_split.fcpxml')
-    self.xml_input_file = Path('finalcut_xml/tochange.fcpxml')
-    self.outfile = Path('finalcut_xml/output.fcpxml')
-
-    with open(self.scene_input_file) as infile:
-      self.scene_splits = json.load(infile)
+#     with open(self.scene_input_file) as infile:
+#       self.scene_splits = json.load(infile)
 
 
-def main():
-  config = anyfig.setup_config(default_config='Config')
-  print(config)
-  tree = etree.parse(str(config.xml_input_file))
-  root = tree.getroot()
+def main(root, tree, scene_splits):
+  # config = anyfig.setup_config(default_config='Config')
+  # print(config)
+  # tree = etree.parse(str(config.xml_input_file))
+  # root = tree.getroot()
   # print_xml(root, only_keys=True)
   # print_xml(root, only_keys=False)
-  clip_name = Path(config.scene_splits['filename']).stem
+  clip_name = Path(scene_splits['filename']).stem
 
   # Add smart collection
   events = root.findall('./library/event')
@@ -35,7 +34,7 @@ def main():
     event.append(smart_collection)
 
   # TODO: Check if filename exists in final cut
-  xml = config.scene_splits['xml_info']
+  xml = scene_splits['xml_info']
   for clip in root.iter('asset-clip'):
     if clip.attrib['name'] == clip_name:
       keywords = get_clips(xml['clips'])
@@ -44,8 +43,9 @@ def main():
       markers = get_markers(xml['markers'])
       clip = xml_utils.add_children(clip, children=markers)
 
-  xml_utils.save_xml(tree, str(config.outfile))
-  send_xml_to_finalcut(config.outfile.resolve())
+  tmp_xmlpath = '/tmp/final_cut_metadata.fcpxml'
+  xml_utils.save_xml(tree, tmp_xmlpath)
+  send_xml_to_finalcut(tmp_xmlpath)
 
 
 def send_xml_to_finalcut(xml_path):
