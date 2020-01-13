@@ -11,8 +11,8 @@ from edit_xml import main as edit_main
 @anyfig.config_class
 class Config():
   def __init__(self):
-    # self.xml_file = Path('finalcut_xml/tochange.fcpxml')
-    self.xml_file = Path('finalcut_xml/walking.fcpxml')
+    self.xml_file = Path('finalcut_xml/twowalks.fcpxml')
+    # self.xml_file = Path('finalcut_xml/walking.fcpxml')
 
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = str(
       Path(__file__).parent.absolute() / 'speech_key.json')
@@ -30,7 +30,7 @@ def main():
   for asset in assets:
     data = recognizer.prepare_data(asset['src'])
     actions = recognizer.find_actions(data)
-    analyzed_metadatum.append(dict(id=asset['id'], actions=dict(actions)))
+    analyzed_metadatum.append(dict(id=asset['id'], actions=actions))
 
   edit_main(config.xml_file, analyzed_metadatum)
 

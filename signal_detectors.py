@@ -63,7 +63,7 @@ class GoogleSpeechRecognition():
     command_format = namedtuple('Command', 'command command_variant')
     self.commands = []
     # TODO: If using this, the lengths become uneven
-    # self.commands.append(command_format(Commands.wakeword, 'videohelper'))
+    self.commands.append(command_format(Commands.wakeword, 'videohelper'))
     self.commands.append(command_format(Commands.wakeword, 'video helper'))
     self.commands.append(command_format(Commands.startclip, 'start clip'))
     self.commands.append(command_format(Commands.endclip, 'end clip'))
@@ -74,8 +74,8 @@ class GoogleSpeechRecognition():
     self.word_format = namedtuple('Word', 'text start_time end_time')
 
   def find_actions(self, audio):
-    # words = self.transcribe_audio(audio)
-    words = get_fake_words()
+    words = self.transcribe_audio(audio)
+    # words = get_fake_words()
 
     # text = [w.text for w in words]
     # print(text)
@@ -92,6 +92,8 @@ class GoogleSpeechRecognition():
       if isinstance(word.text, Commands):
         command2index[word.text].append(ind)
 
+    to_timestring = lambda x: f'{int(x*1000)}/1000'  # TODO: Problem?
+
     actions = defaultdict(list)
     for wake_word_ind in command2index[Commands.wakeword]:
       wake_word = index2word[wake_word_ind]
@@ -99,7 +101,8 @@ class GoogleSpeechRecognition():
 
       if command_word.text == Commands.placemarker:
         marker_word = index2word[wake_word_ind + 2]
-        action = dict(time=marker_word.start_time, name=marker_word.text)
+        action = dict(time=to_timestring(marker_word.start_time),
+                      name=marker_word.text)
         actions[command_word.text].append(action)
 
       if command_word.text == Commands.startclip:
@@ -114,24 +117,23 @@ class GoogleSpeechRecognition():
     formated_actions = defaultdict(list)
     for start_clip, end_clip in zip(actions[Commands.startclip],
                                     actions[Commands.endclip]):
-      action = dict(start_time=start_clip['time'],
-                    end_time=end_clip['time'],
-                    duration=end_clip['time'] - start_clip['time'])
+      action = dict(start_time=to_timestring(start_clip['time']),
+                    end_time=to_timestring(end_clip['time']),
+                    duration=to_timestring(end_clip['time'] -
+                                           start_clip['time']))
       formated_actions['clips'].append(action)
 
     formated_actions['markers'] = actions[Commands.placemarker]
-    return formated_actions
+    return dict(formated_actions)
 
   def format_transcription(self, words):
-    ''' Changes the occurances of video helper to videohelper '''
-
-    # TODO: Move away from string. Placeholder doesn't work video one word commands (nor three I guess)
     placeholder = '!placeholder!'
     text = ' '.join([w.text for w in words])
     for command, command_alternative in self.commands:
-      text = text.replace(command_alternative, f'{command} {placeholder}')
+      n_words_command = len(command_alternative.split())
+      placeh = " ".join([placeholder for _ in range(n_words_command - 1)])
+      text = text.replace(command_alternative, f'{command} {placeh}')
     text = text.split()
-    print(text)
 
     assert len(words) == len(text)
 
