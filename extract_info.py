@@ -11,11 +11,8 @@ from edit_xml import main as edit_main
 @anyfig.config_class
 class Config():
   def __init__(self):
-    # self.data_file = 'music/walk.wav'
-    # self.data_file = 'walk.aac'
-    # self.data_file = 'gs://splitter-speechtotext/park.wav'
-    # self.data_file = 'gs://splitter-speechtotext/walk.wav'
-    self.xml_file = Path('finalcut_xml/tochange.fcpxml')
+    # self.xml_file = Path('finalcut_xml/tochange.fcpxml')
+    self.xml_file = Path('finalcut_xml/walking.fcpxml')
 
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = str(
       Path(__file__).parent.absolute() / 'speech_key.json')
@@ -27,15 +24,15 @@ def main():
   print(config)
   recognizer = config.recognizer
 
-  root, tree, assets = get_src_files(config.xml_file)
+  assets = get_src_files(config.xml_file)
 
+  analyzed_metadatum = []
   for asset in assets:
     data = recognizer.prepare_data(asset['src'])
     actions = recognizer.find_actions(data)
+    analyzed_metadatum.append(dict(id=asset['id'], actions=dict(actions)))
 
-  action_data = save_split_info(actions, config.xml_file)
-  edit_main(root, tree, action_data)
-  qwe
+  edit_main(config.xml_file, analyzed_metadatum)
 
 
 def get_src_files(path):
@@ -43,11 +40,11 @@ def get_src_files(path):
   root = tree.getroot()
   asset_xmls = root.findall('resources/asset')
 
-  return root, tree, [a.attrib for a in asset_xmls]
+  return [a.attrib for a in asset_xmls]
 
 
 def save_split_info(split_info, filename):
-  data = dict(filename=str(filename), xml_info=split_info)
+  data = dict(filename=str(filename), xml_info=dict(split_info))
   # with open('scene_splits.json', 'w') as outfile:
   #   json.dump(data, outfile, indent=2)
   return data

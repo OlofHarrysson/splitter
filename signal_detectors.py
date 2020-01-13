@@ -62,7 +62,8 @@ class GoogleSpeechRecognition():
 
     command_format = namedtuple('Command', 'command command_variant')
     self.commands = []
-    self.commands.append(command_format(Commands.wakeword, 'videohelper'))
+    # TODO: If using this, the lengths become uneven
+    # self.commands.append(command_format(Commands.wakeword, 'videohelper'))
     self.commands.append(command_format(Commands.wakeword, 'video helper'))
     self.commands.append(command_format(Commands.startclip, 'start clip'))
     self.commands.append(command_format(Commands.endclip, 'end clip'))
@@ -78,10 +79,12 @@ class GoogleSpeechRecognition():
 
     # text = [w.text for w in words]
     # print(text)
+    # print(words)
 
     words = self.format_transcription(words)
     # text = [w.text for w in words]
     # print(text)
+    # print(words)
 
     index2word = {i: w for i, w in enumerate(words)}
     command2index = defaultdict(list)
@@ -128,6 +131,9 @@ class GoogleSpeechRecognition():
     for command, command_alternative in self.commands:
       text = text.replace(command_alternative, f'{command} {placeholder}')
     text = text.split()
+    print(text)
+
+    assert len(words) == len(text)
 
     formated_words = []
     for w, t in zip(words, text):

@@ -6,26 +6,12 @@ import subprocess
 
 import xml_utils
 
-# @anyfig.config_class
-# class Config():
-#   def __init__(self):
-#     self.scene_input_file = Path('scene_splits.json')
-#     # self.xml_input_file = Path('finalcut_xml/home_split.fcpxml')
-#     self.xml_input_file = Path('finalcut_xml/tochange.fcpxml')
-#     self.outfile = Path('finalcut_xml/output.fcpxml')
 
-#     with open(self.scene_input_file) as infile:
-#       self.scene_splits = json.load(infile)
-
-
-def main(root, tree, scene_splits):
-  # config = anyfig.setup_config(default_config='Config')
-  # print(config)
-  # tree = etree.parse(str(config.xml_input_file))
-  # root = tree.getroot()
+def main(xml_file, analyzed_metadatum):
+  tree = etree.parse(str(xml_file))
+  root = tree.getroot()
   # print_xml(root, only_keys=True)
   # print_xml(root, only_keys=False)
-  clip_name = Path(scene_splits['filename']).stem
 
   # Add smart collection
   events = root.findall('./library/event')
@@ -33,15 +19,22 @@ def main(root, tree, scene_splits):
   for event in events:
     event.append(smart_collection)
 
-  # TODO: Check if filename exists in final cut
-  xml = scene_splits['xml_info']
-  for clip in root.iter('asset-clip'):
-    if clip.attrib['name'] == clip_name:
-      keywords = get_clips(xml['clips'])
-      clip = xml_utils.add_children(clip, children=keywords)
+  print(analyzed_metadatum)
 
-      markers = get_markers(xml['markers'])
-      clip = xml_utils.add_children(clip, children=markers)
+  # Add metadata
+  for analyzed_metadata in analyzed_metadatum:
+    found_actions = analyzed_metadata['actions']
+    for clip in root.iter('asset-clip'):
+
+      if clip.attrib['ref'] == analyzed_metadata['id']:
+        print(found_actions)
+        if 'clips' in found_actions:
+          keywords = get_clips(found_actions['clips'])
+          clip = xml_utils.add_children(clip, children=keywords)
+
+        if 'markers' in found_actions:
+          markers = get_markers(found_actions['markers'])
+          clip = xml_utils.add_children(clip, children=markers)
 
   tmp_xmlpath = '/tmp/final_cut_metadata.fcpxml'
   xml_utils.save_xml(tree, tmp_xmlpath)
