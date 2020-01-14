@@ -1,68 +1,23 @@
-from pyzbar.pyzbar import decode
-from pyzbar.wrapper import ZBarSymbol
-import cv2
-import shapely
-from shapely.geometry import MultiPoint
-import numpy as np
 from collections import namedtuple, defaultdict
-import itertools
 from pathlib import Path
 import subprocess
 
-import io
-import os
 from google.cloud import speech_v1p1beta1 as speech
-from google.cloud.speech_v1p1beta1 import enums
-from google.cloud.speech_v1p1beta1 import types
+from google.cloud.speech_v1p1beta1 import enums, types
 
 from fake_data import get_fake_words
-
-
-class QR_Detector():
-  def draw_bounding_box(self, im, qr_detection):
-    if qr_detection['text']:
-      red_color = (0, 0, 255)
-      points = qr_detection['points'].astype(np.int32)
-
-      im = cv2.polylines(im, [points],
-                         isClosed=True,
-                         color=red_color,
-                         thickness=4)
-
-      x, y = points[3][0][0], points[3][0][1]  # Point for top left
-      cv2.putText(im, qr_detection['text'], (x, y - 10),
-                  cv2.FONT_HERSHEY_SIMPLEX, 1.5, red_color, 2)
-    return im
-
-
-class OpenCVDetector(QR_Detector):
-  def __init__(self):
-    self.qrDecoder = cv2.QRCodeDetector()
-
-  def find_qr(self, image):
-    data, points, rectifiedImage = self.qrDecoder.detectAndDecode(image)
-    return dict(text=data, points=points)
-
-
-class ZbarQRDetector(QR_Detector):
-  def find_qr(self, image):
-    detection = decode(image, symbols=[ZBarSymbol.QRCODE])
-    if not detection:
-      return dict(text=None, points=None)
-
-    text = detection[0].data.decode("utf-8")
-    points = detection[0].polygon
-    points = np.array([[p.x, p.y] for p in points])
-    return dict(text=text, points=np.expand_dims(points, 1))
+from utils import google_utils
 
 
 class GoogleSpeechRecognition():
-  def __init__(self):
+  def __init__(self, commandword_bias):
+
     self.client = speech.SpeechClient()
+
+    self.commandword_bias = commandword_bias
 
     command_format = namedtuple('Command', 'command command_variant')
     self.commands = []
-    # TODO: If using this, the lengths become uneven
     self.commands.append(command_format(Commands.wakeword, 'videohelper'))
     self.commands.append(command_format(Commands.wakeword, 'video helper'))
     self.commands.append(command_format(Commands.startclip, 'start clip'))
@@ -74,8 +29,8 @@ class GoogleSpeechRecognition():
     self.word_format = namedtuple('Word', 'text start_time end_time')
 
   def find_actions(self, audio):
-    words = self.transcribe_audio(audio)
-    # words = get_fake_words()
+    # words = self.transcribe_audio(audio)
+    words = get_fake_words()
 
     # text = [w.text for w in words]
     # print(text)
@@ -155,7 +110,7 @@ class GoogleSpeechRecognition():
       audio_channel_count=2,
       enable_word_time_offsets=True,
       model='video',
-      speech_contexts=[dict(phrases=phrases, boost=20)])
+      speech_contexts=[dict(phrases=phrases, boost=self.commandword_bias)])
 
     operation = self.client.long_running_recognize(config, audio)
 
@@ -177,40 +132,20 @@ class GoogleSpeechRecognition():
     path = Path(path)
     assert path.exists(), f"File {path} doesn't exist"
 
-    # create .wav file
-
     tmp_audio_file = f'/tmp/{path.stem}.wav'
     cloud_path = Path(tmp_audio_file)
     args = ['ffmpeg', '-i', str(path), tmp_audio_file, '-y']
     completed = subprocess.run(args, capture_output=True)
 
-    if not blob_exists('splitter-speechtotext', cloud_path.name):
+    if not google_utils.blob_exists('splitter-speechtotext', cloud_path.name):
       print(f"Uploading file to {cloud_path.name}...")
 
-      upload_blob('splitter-speechtotext', tmp_audio_file, cloud_path.name)
+      google_utils.upload_blob('splitter-speechtotext', tmp_audio_file,
+                               cloud_path.name)
 
     uri_path = 'gs://splitter-speechtotext/' + cloud_path.name
     audio = {"uri": uri_path}
     return audio
-
-
-from google.cloud import storage
-
-
-def upload_blob(bucket_name, source_file_name, destination_blob_name):
-  ''' Uploads a file to the bucket '''
-  storage_client = storage.Client()
-  bucket = storage_client.get_bucket(bucket_name)
-  blob = bucket.blob(destination_blob_name)
-
-  blob.upload_from_filename(source_file_name)
-
-
-def blob_exists(bucket_name, filename):
-  client = storage.Client()
-  bucket = client.get_bucket(bucket_name)
-  blob = bucket.blob(filename)
-  return blob.exists()
 
 
 import enum

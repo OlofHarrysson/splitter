@@ -1,17 +1,15 @@
 from lxml import etree
 
 
+def read_xml(path):
+  tree = etree.parse(str(path))
+  root = tree.getroot()
+  return tree, root
+
+
 def save_xml(element, outfile):
   element.write(outfile)
   clean_up_xml(outfile)
-
-
-def print_xml(root, only_keys=False):
-  for child in root.iter():
-    if only_keys:
-      print(child.tag)
-    else:
-      print(child.tag, child.attrib)
 
 
 def clean_up_xml(xml_file):
@@ -19,14 +17,6 @@ def clean_up_xml(xml_file):
   root = etree.parse(xml_file, parser).getroot()
   tree = etree.ElementTree(root)
   tree.write(xml_file, encoding='utf-8', pretty_print=True)
-
-  # TODO: Doesn't seem like this is needed?
-  # prepend_info = '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE fcpxml>\n\n'
-  # with open(xml_file) as f:
-  #   xml_data = f.read()
-
-  # with open(xml_file, 'w') as f:
-  #   f.write(prepend_info + xml_data)
 
 
 def create_element(name, attributes=None):

@@ -1,22 +1,25 @@
 import anyfig
-import json
 import signal_detectors
 from pathlib import Path
-from lxml import etree
-import os
 
 from edit_xml import main as edit_main
+
+from utils import google_utils
+from utils import xml_utils
 
 
 @anyfig.config_class
 class Config():
   def __init__(self):
+    google_utils.register_credentials()
     self.xml_file = Path('finalcut_xml/twowalks.fcpxml')
     # self.xml_file = Path('finalcut_xml/walking.fcpxml')
 
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = str(
-      Path(__file__).parent.absolute() / 'speech_key.json')
-    self.recognizer = signal_detectors.GoogleSpeechRecognition()
+    self.send_to_finalcut = False
+
+    self.commandword_bias = 40
+    self.recognizer = signal_detectors.GoogleSpeechRecognition(
+      self.commandword_bias)
 
 
 def main():
@@ -24,7 +27,7 @@ def main():
   print(config)
   recognizer = config.recognizer
 
-  assets = get_src_files(config.xml_file)
+  assets = get_asset_files(config.xml_file)
 
   analyzed_metadatum = []
   for asset in assets:
@@ -32,22 +35,13 @@ def main():
     actions = recognizer.find_actions(data)
     analyzed_metadatum.append(dict(id=asset['id'], actions=actions))
 
-  edit_main(config.xml_file, analyzed_metadatum)
+  edit_main(config.xml_file, analyzed_metadatum, config.send_to_finalcut)
 
 
-def get_src_files(path):
-  tree = etree.parse(str(path))
-  root = tree.getroot()
+def get_asset_files(path):
+  tree, root = xml_utils.read_xml(path)
   asset_xmls = root.findall('resources/asset')
-
   return [a.attrib for a in asset_xmls]
-
-
-def save_split_info(split_info, filename):
-  data = dict(filename=str(filename), xml_info=dict(split_info))
-  # with open('scene_splits.json', 'w') as outfile:
-  #   json.dump(data, outfile, indent=2)
-  return data
 
 
 if __name__ == '__main__':

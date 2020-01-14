@@ -1,6 +1,5 @@
 TODO
-Point to exported xml file. Go through raw-files, create .wavs, analyze and create new output xml, send to final cut.
-Remove the !placeholder! logic
+Add easy to read transcript for debug purposes
 
 Voice controlled
 

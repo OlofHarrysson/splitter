@@ -1,17 +1,13 @@
 from pathlib import Path
 import anyfig
-import json
 from lxml import etree
 import subprocess
 
-import xml_utils
+from utils import xml_utils
 
 
-def main(xml_file, analyzed_metadatum):
-  tree = etree.parse(str(xml_file))
-  root = tree.getroot()
-  # print_xml(root, only_keys=True)
-  # print_xml(root, only_keys=False)
+def main(xml_file, analyzed_metadatum, send_to_finalcut):
+  tree, root = xml_utils.read_xml(xml_file)
 
   # Add smart collection
   events = root.findall('./library/event')
@@ -19,15 +15,12 @@ def main(xml_file, analyzed_metadatum):
   for event in events:
     event.append(smart_collection)
 
-  print(analyzed_metadatum)
-
   # Add metadata
   for analyzed_metadata in analyzed_metadatum:
     found_actions = analyzed_metadata['actions']
     for clip in root.iter('asset-clip'):
 
       if clip.attrib['ref'] == analyzed_metadata['id']:
-        print(found_actions)
         if 'clips' in found_actions:
           keywords = get_clips(found_actions['clips'])
           clip = xml_utils.add_children(clip, children=keywords)
@@ -38,7 +31,8 @@ def main(xml_file, analyzed_metadatum):
 
   tmp_xmlpath = '/tmp/final_cut_metadata.fcpxml'
   xml_utils.save_xml(tree, tmp_xmlpath)
-  send_xml_to_finalcut(tmp_xmlpath)
+  if send_to_finalcut:
+    send_xml_to_finalcut(tmp_xmlpath)
 
 
 def send_xml_to_finalcut(xml_path):
@@ -60,28 +54,28 @@ def create_smart_collection():
   return xml_utils.add_children(smart_collection, children=[m1, m2])
 
 
-def get_markers(markers_json):
-  markers = []
-  for m_json in markers_json:
-    time, tag = m_json['time'], m_json['name']
+def get_markers(markers):
+  xml_markers = []
+  for marker in markers:
+    time, tag = marker['time'], marker['name']
 
     attrs = dict(start=f'{time}s', duration='1s', value=f'videohelper {tag}')
-    markers.append(xml_utils.create_element('marker', attrs))
+    xml_markers.append(xml_utils.create_element('marker', attrs))
 
-  return markers
+  return xml_markers
 
 
-def get_clips(clips_json):
-  keywords = []
-  for clip_json in clips_json:
-    start, duration = clip_json['start_time'], clip_json['duration']
+def get_clips(clips):
+  xml_keywords = []
+  for clip in clips:
+    start, duration = clip['start_time'], clip['duration']
 
     attrs = dict(start=f'{start}s',
                  duration=f'{duration}s',
                  value=f'videohelper clips')
-    keywords.append(xml_utils.create_element('keyword', attrs))
+    xml_keywords.append(xml_utils.create_element('keyword', attrs))
 
-  return keywords
+  return xml_keywords
 
 
 if __name__ == '__main__':
