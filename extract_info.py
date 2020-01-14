@@ -12,18 +12,28 @@ from utils import xml_utils
 class Config():
   def __init__(self):
     google_utils.register_credentials()
-    self.xml_file = Path('finalcut_xml/twowalks.fcpxml')
+    self.xml_file = Path('finalcut_xml/sofa_event.fcpxml')
+    # self.xml_file = Path('finalcut_xml/twowalks.fcpxml')
     # self.xml_file = Path('finalcut_xml/walking.fcpxml')
 
-    self.send_to_finalcut = False
+    self.send_to_finalcut = True
+    self.fake_data = False
 
     self.commandword_bias = 40
     self.recognizer = signal_detectors.GoogleSpeechRecognition(
       self.commandword_bias)
 
 
+@anyfig.config_class
+class DebugConfig(Config):
+  def __init__(self):
+    super().__init__()
+    self.send_to_finalcut = False
+    self.fake_data = True
+
+
 def main():
-  config = anyfig.setup_config(default_config='Config')
+  config = anyfig.setup_config(default_config='DebugConfig')
   print(config)
   recognizer = config.recognizer
 
@@ -32,7 +42,7 @@ def main():
   analyzed_metadatum = []
   for asset in assets:
     data = recognizer.prepare_data(asset['src'])
-    actions = recognizer.find_actions(data)
+    actions = recognizer.find_actions(data, config.fake_data)
     analyzed_metadatum.append(dict(id=asset['id'], actions=actions))
 
   edit_main(config.xml_file, analyzed_metadatum, config.send_to_finalcut)

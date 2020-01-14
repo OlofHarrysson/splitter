@@ -7,6 +7,7 @@ from google.cloud.speech_v1p1beta1 import enums, types
 
 from fake_data import get_fake_words
 from utils import google_utils
+from dataformats import Commands
 
 
 class GoogleSpeechRecognition():
@@ -26,20 +27,16 @@ class GoogleSpeechRecognition():
     self.commands.append(command_format(Commands.placemarker, 'add markers'))
     self.commands.append(command_format(Commands.placemarker, 'add marker'))
 
-    self.word_format = namedtuple('Word', 'text start_time end_time')
+  def find_actions(self, audio, fake_data):
+    if fake_data:
+      transcriber = Transcriber([])
+      transcriber.words = get_fake_words()
+    else:
+      raw_words = self.transcribe_audio(audio)
+      transcriber = Transcriber(raw_words)
 
-  def find_actions(self, audio):
-    # words = self.transcribe_audio(audio)
-    words = get_fake_words()
-
-    # text = [w.text for w in words]
-    # print(text)
-    # print(words)
-
-    words = self.format_transcription(words)
-    # text = [w.text for w in words]
-    # print(text)
-    # print(words)
+    transcriber.print_text()
+    words = transcriber.format_transcription(self.commands)
 
     index2word = {i: w for i, w in enumerate(words)}
     command2index = defaultdict(list)
@@ -81,27 +78,6 @@ class GoogleSpeechRecognition():
     formated_actions['markers'] = actions[Commands.placemarker]
     return dict(formated_actions)
 
-  def format_transcription(self, words):
-    placeholder = '!placeholder!'
-    text = ' '.join([w.text for w in words])
-    for command, command_alternative in self.commands:
-      n_words_command = len(command_alternative.split())
-      placeh = " ".join([placeholder for _ in range(n_words_command - 1)])
-      text = text.replace(command_alternative, f'{command} {placeh}')
-    text = text.split()
-
-    assert len(words) == len(text)
-
-    formated_words = []
-    for w, t in zip(words, text):
-      if t != placeholder:
-        if t.startswith('Commands.'):
-          t = eval(t)
-
-        formated_words.append(self.word_format(t, w.start_time, w.end_time))
-
-    return formated_words
-
   def transcribe_audio(self, audio):
     phrases = [c.command_variant for c in self.commands]
     config = types.RecognitionConfig(
@@ -114,17 +90,13 @@ class GoogleSpeechRecognition():
 
     operation = self.client.long_running_recognize(config, audio)
 
-    print(u"Waiting for operation to complete...")
+    print(u"Analyzing speech...")
     response = operation.result()
 
     words = []
     for result in response.results:
       for word in result.alternatives[0].words:
-        start_time = word.start_time.seconds + word.start_time.nanos / 1e9
-        end_time = word.end_time.seconds + word.end_time.nanos / 1e9
-        words.append(self.word_format(word.word, start_time, end_time))
-        # TODO: Add confidence?
-
+        words.append(word)
     return words
 
   def prepare_data(self, path):
@@ -148,12 +120,38 @@ class GoogleSpeechRecognition():
     return audio
 
 
-import enum
+class Transcriber():
+  def __init__(self, raw_words):
+    self.word_format = namedtuple('Word', 'text start_time end_time')
 
+    self.words = []
+    for word in raw_words:
+      start_time = word.start_time.seconds + word.start_time.nanos / 1e9
+      end_time = word.end_time.seconds + word.end_time.nanos / 1e9
+      self.words.append(self.word_format(word.word, start_time, end_time))
+      # TODO: Add confidence?
 
-@enum.unique
-class Commands(enum.Enum):
-  wakeword = enum.auto()  # TODO I want wakeword with value videohelper?
-  startclip = enum.auto()
-  endclip = enum.auto()
-  placemarker = enum.auto()
+  def format_transcription(self, commands):
+    placeholder = '!placeholder!'
+    text = ' '.join([w.text for w in self.words])
+    for command, command_alternative in commands:
+      n_words_command = len(command_alternative.split())
+      placeh = " ".join([placeholder for _ in range(n_words_command - 1)])
+      text = text.replace(command_alternative, f'{command} {placeh}')
+    text = text.split()
+
+    assert len(self.words) == len(text)
+
+    formated_words = []
+    for w, t in zip(self.words, text):
+      if t != placeholder:
+        if t.startswith('Commands.'):
+          t = eval(t)
+
+        formated_words.append(self.word_format(t, w.start_time, w.end_time))
+
+    return formated_words
+
+  def print_text(self):
+    text = [w.text for w in self.words]
+    print(' '.join(text))

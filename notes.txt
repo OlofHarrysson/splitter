@@ -1,5 +1,6 @@
 TODO
-Add easy to read transcript for debug purposes
+Specify bucket as config
+handle sound files and not just video files.
 
 Voice controlled
 
