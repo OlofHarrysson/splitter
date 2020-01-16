@@ -1,6 +1,7 @@
 from collections import namedtuple, defaultdict
 from pathlib import Path
 import subprocess
+import ffmpeg
 
 from google.cloud import speech_v1p1beta1 as speech
 from google.cloud.speech_v1p1beta1 import enums, types
@@ -100,14 +101,18 @@ class GoogleSpeechRecognition():
     return words
 
   def prepare_data(self, path):
-    path = path.replace('file://', '').replace('%20', ' ')
+    path = path.replace('file://', '').rbeplace('%20', ' ')
+    # path = path.replace('file://', '').replace('%20', '_')
+    # path = path.replace('file://', '')
     path = Path(path)
-    assert path.exists(), f"File {path} doesn't exist"
+    assert path.exists(), f"File '{path}' doesn't exist"
+    assert path.is_file(), f"Path '{path}' wasn't a file"
 
     tmp_audio_file = f'/tmp/{path.stem}.wav'
     cloud_path = Path(tmp_audio_file)
-    args = ['ffmpeg', '-i', str(path), tmp_audio_file, '-y']
-    completed = subprocess.run(args, capture_output=True)
+    print(path)
+    ffmpeg.input(path).output(tmp_audio_file).overwrite_output().run(
+      quiet=True)
 
     if not google_utils.blob_exists('splitter-speechtotext', cloud_path.name):
       print(f"Uploading file to {cloud_path.name}...")

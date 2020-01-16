@@ -1,4 +1,5 @@
 from lxml import etree
+from pathlib import Path
 
 
 def read_xml(path):
@@ -33,3 +34,15 @@ def create_element(name, attributes=None):
 def add_children(parent, children):
   [parent.append(c) for c in children]
   return parent
+
+
+def get_asset_attributes(path):
+  tree, root = read_xml(path)
+  asset_xmls = root.findall('resources/asset')
+  return [a.attrib for a in asset_xmls]
+
+
+def get_asset_paths(path):
+  assets = get_asset_attributes(path)
+  paths = [a['src'] for a in assets]
+  return [Path(p.replace('file://', '')) for p in paths]

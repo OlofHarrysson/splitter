@@ -1,14 +1,22 @@
 TODO
-Specify bucket as config
+Specify google-bucket as config
 handle sound files and not just video files.
+Make it so anyone can run it? Nah...
+Create new repo. Decide on name. Sticker, notes
+Do docker? What about apple event
+Handle %20 space paths in mac
+Clean up the config. Should only be in one place
 
-Voice controlled
+Create youtube video.
+- Record real video
+  - Create transcript
+- Screen record workflow
+- Edit video together
 
-Start and end clip - exported as keywords
-Add timestamped tag. Do it with marker
+Create forum post
+
 
 Would also work for podcasts
-
 
 Voice commands
 Debug commands - https://speechlogger.appspot.com/
@@ -18,7 +26,8 @@ Debug commands - https://speechlogger.appspot.com/
 
 
 Long term
-- Workflow Extension - plugin for final cut. Seems like you have to collaborate with apple?
+- Workflow Extension - plugin for final cut. Seems like you have to collaborate with apple? Mac OS desktop client could allow for drag and drop workflow at least.
+- Add full transcriptions?
 
 
 Have different options
@@ -60,9 +69,6 @@ http://qrcode.meetheed.com/index.php - qrcodes explained
 https://www.qrcode.com/en/codes/iqr.html - iqr and more
 
 
-Final Cut Xml
-Want to let users import media that comes with keywords. In xml you have to specify the video and its format, fps etc - what if users have other preference?
-Would be better to let users import the media, select the files and export an xml - send that to my program which creates a new xml and they can import that
 
 Final Cut / Premier Addon
 Mark import folder and right click -> splitter organize -> brings up window with some settings. One cool feature would be to analyze images / sound / metadata to create automatic clips or tags along with the defined ones.
