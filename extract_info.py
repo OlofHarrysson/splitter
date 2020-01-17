@@ -2,33 +2,10 @@ import anyfig
 from pathlib import Path
 
 import signal_detectors
+import analyze_metadata
 from edit_xml import main as edit_main
 from utils import google_utils
 from utils import xml_utils
-
-
-@anyfig.config_class
-class Config():
-  def __init__(self):
-    google_utils.register_credentials()
-    self.xml_file = Path('finalcut_xml/sofa_event.fcpxml')
-    # self.xml_file = Path('finalcut_xml/twowalks.fcpxml')
-    # self.xml_file = Path('finalcut_xml/walking.fcpxml')
-
-    self.send_to_finalcut = True
-    self.fake_data = False
-
-    self.commandword_bias = 40
-    self.recognizer = signal_detectors.GoogleSpeechRecognition(
-      self.commandword_bias)
-
-
-@anyfig.config_class
-class DebugConfig(Config):
-  def __init__(self):
-    super().__init__()
-    self.send_to_finalcut = False
-    self.fake_data = True
 
 
 def main():

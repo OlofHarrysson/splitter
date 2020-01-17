@@ -101,16 +101,13 @@ class GoogleSpeechRecognition():
     return words
 
   def prepare_data(self, path):
-    path = path.replace('file://', '').rbeplace('%20', ' ')
-    # path = path.replace('file://', '').replace('%20', '_')
-    # path = path.replace('file://', '')
+    path = path.replace('file://', '').replace('%20', ' ')
     path = Path(path)
     assert path.exists(), f"File '{path}' doesn't exist"
     assert path.is_file(), f"Path '{path}' wasn't a file"
 
     tmp_audio_file = f'/tmp/{path.stem}.wav'
     cloud_path = Path(tmp_audio_file)
-    print(path)
     ffmpeg.input(path).output(tmp_audio_file).overwrite_output().run(
       quiet=True)
 
