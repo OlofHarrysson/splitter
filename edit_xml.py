@@ -28,12 +28,8 @@ def main(xml_file, analyzed_metadatum, send_to_finalcut):
           markers = get_markers(found_actions['markers'])
           clip = xml_utils.add_children(clip, children=markers)
 
-  # tmp_xmlpath = '/tmp/final_cut_metadata.fcpxml'
-  # print(xml_file)
   xml_outpath = Path('output') / xml_file.name
   xml_utils.save_xml(tree, str(xml_outpath))
-  # if send_to_finalcut:
-  #   meta_utils.send_xml_to_finalcut(tmp_xmlpath)
 
 
 def create_smart_collection():

@@ -17,12 +17,8 @@ def main():
   print(config)
   recognizer = config.recognizer
 
-  assets = get_asset_files(config.xml_file)
-  # print(assets)
-  # qwe
-
   analyzed_metadatum = []
-  for asset in assets:
+  for asset in get_asset_files(config.xml_file):
     data = recognizer.prepare_data(asset['src'])
     actions = recognizer.find_actions(data, config.fake_data)
     analyzed_metadatum.append(dict(id=asset['id'], actions=actions))
