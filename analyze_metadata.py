@@ -32,10 +32,14 @@ class DebugConfig(Config):
     self.fake_data = True
     # self.bash = True
     self.bash = False
+    self.clear_outdir = True
 
 
 def main():
   config = anyfig.setup_config(default_config='DebugConfig')
+
+  qwe
+
   asset_paths = xml_utils.get_asset_paths(config.xml_file)
 
   docker_asset_paths = set([f'{p.parent}:{p.parent}' for p in asset_paths])
@@ -59,19 +63,9 @@ def main():
 
   completed = subprocess.run(args, capture_output=False)
   print('returncode:', completed.returncode)
+  if completed.returncode == 0 and config.send_to_finalcut:
+    meta_utils.send_xml_to_finalcut(tmp_xmlpath)
 
 
 if __name__ == '__main__':
   main()
-
-# docker run -it --rm --name stick -v /Users/olof/git/splitter:/sticker -v /Users/olof/Movies/split.fcpbundle/sofa_event/Original\ Media:/Users/olof/Movies/split.fcpbundle/sofa_event/Original_Media sticker /bin/bash
-
-# docker run -it \
-#   --rm \
-#   --name stick \
-#   -v "$PWD":/sticker \
-#   sticker \
-#   /bin/bash
-
-# # docker run -it --entrypoint='bash' jrottenberg/ffmpeg:4.1
-# docker run -it --entrypoint='bash' --rm --name stick sticker

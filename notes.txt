@@ -1,11 +1,9 @@
 TODO
 Specify google-bucket as config
 handle sound files and not just video files.
-Make it so anyone can run it? Nah...
 Create new repo. Decide on name. Sticker, notes
-Do docker? What about apple event
-Handle %20 space paths in mac
-Clean up the config. Should only be in one place
+
+Anfig note: prefer not to have the default setup with a string. Better to set it explicitly. Like register available ones
 
 Create youtube video.
 - Record real video

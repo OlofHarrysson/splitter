@@ -1,7 +1,6 @@
 from pathlib import Path
 import anyfig
 from lxml import etree
-import subprocess
 
 from utils import xml_utils
 
@@ -29,16 +28,12 @@ def main(xml_file, analyzed_metadatum, send_to_finalcut):
           markers = get_markers(found_actions['markers'])
           clip = xml_utils.add_children(clip, children=markers)
 
-  tmp_xmlpath = '/tmp/final_cut_metadata.fcpxml'
-  xml_utils.save_xml(tree, tmp_xmlpath)
-  if send_to_finalcut:
-    send_xml_to_finalcut(tmp_xmlpath)
-
-
-def send_xml_to_finalcut(xml_path):
-  args = ['osascript', 'finalcut_integration/send_data.scpt', xml_path]
-  completed = subprocess.run(args, capture_output=True)
-  print('returncode:', completed.returncode)
+  # tmp_xmlpath = '/tmp/final_cut_metadata.fcpxml'
+  # print(xml_file)
+  xml_outpath = Path('output') / xml_file.name
+  xml_utils.save_xml(tree, str(xml_outpath))
+  # if send_to_finalcut:
+  #   meta_utils.send_xml_to_finalcut(tmp_xmlpath)
 
 
 def create_smart_collection():
@@ -76,7 +71,3 @@ def get_clips(clips):
     xml_keywords.append(xml_utils.create_element('keyword', attrs))
 
   return xml_keywords
-
-
-if __name__ == '__main__':
-  main()
