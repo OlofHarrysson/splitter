@@ -100,7 +100,7 @@ class GoogleSpeechRecognition():
         words.append(word)
     return words
 
-  def prepare_data(self, path):
+  def prepare_data(self, path, google_bucket_name):
     path = path.replace('file://', '').replace('%20', ' ')
     path = Path(path)
     assert path.exists(), f"File '{path}' doesn't exist"
@@ -111,13 +111,13 @@ class GoogleSpeechRecognition():
     ffmpeg.input(path).output(tmp_audio_file).overwrite_output().run(
       quiet=True)
 
-    if not google_utils.blob_exists('splitter-speechtotext', cloud_path.name):
+    if not google_utils.blob_exists(google_bucket_name, cloud_path.name):
       print(f"Uploading file to {cloud_path.name}...")
 
-      google_utils.upload_blob('splitter-speechtotext', tmp_audio_file,
+      google_utils.upload_blob(google_bucket_name, tmp_audio_file,
                                cloud_path.name)
 
-    uri_path = 'gs://splitter-speechtotext/' + cloud_path.name
+    uri_path = f'gs://{google_bucket_name}/' + cloud_path.name
     audio = {"uri": uri_path}
     return audio
 

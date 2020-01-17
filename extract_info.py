@@ -19,7 +19,7 @@ def main():
 
   analyzed_metadatum = []
   for asset in get_asset_files(config.xml_file):
-    data = recognizer.prepare_data(asset['src'])
+    data = recognizer.prepare_data(asset['src'], config.google_bucket_name)
     actions = recognizer.find_actions(data, config.fake_data)
     analyzed_metadatum.append(dict(id=asset['id'], actions=actions))
 

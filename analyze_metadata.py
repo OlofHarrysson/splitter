@@ -12,7 +12,8 @@ from utils import xml_utils
 @anyfig.config_class
 class Config():
   def __init__(self):
-    google_utils.register_credentials()
+    self.google_bucket_name = 'splitter-speechtotext2'
+    google_utils.register_credentials(self.google_bucket_name)
     self.xml_file = Path('finalcut_xml/sofa_event.fcpxml')
     # self.xml_file = Path('finalcut_xml/twowalks.fcpxml')
     # self.xml_file = Path('finalcut_xml/walking.fcpxml')
