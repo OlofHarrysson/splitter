@@ -6,5 +6,5 @@ saved/
 *.wav
 *.MOV
 music/
-speech_key.json
+.google_key.json
 output/

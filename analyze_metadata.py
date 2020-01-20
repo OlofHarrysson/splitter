@@ -1,7 +1,8 @@
 import subprocess
-from pathlib import Path
 import anyfig
 import sys
+from pathlib import Path
+from datetime import datetime
 
 import signal_detectors
 from utils import meta_utils
@@ -12,7 +13,8 @@ from utils import xml_utils
 @anyfig.config_class
 class Config():
   def __init__(self):
-    self.google_bucket_name = 'splitter-speechtotext2'
+    self.google_bucket_name = 'testytesty'
+    # self.google_bucket_name = 'splitter-speechtotext'
     google_utils.register_credentials(self.google_bucket_name)
     self.xml_file = Path('finalcut_xml/sofa_event.fcpxml')
     # self.xml_file = Path('finalcut_xml/twowalks.fcpxml')
@@ -27,17 +29,20 @@ class Config():
 
     self.bash = False
     self.clear_outdir = True
+    self.unique_cloud_file_id = datetime.now().strftime("%Y-%m-%d-%H%M%S")
+    self.delete_cloud_file = True
 
 
 @anyfig.config_class
 class DebugConfig(Config):
   def __init__(self):
     super().__init__()
-    # self.send_to_finalcut = False
-    self.send_to_finalcut = True
+    self.unique_cloud_file_id = False
+    self.send_to_finalcut = False
     self.fake_data = True
-    self.bash = False
-    self.clear_outdir = True
+    self.unique_cloud_file_id = ''
+    self.delete_cloud_file = False
+    # self.bash = True
 
 
 def main():
@@ -61,7 +66,7 @@ def main():
   args = [a.replace('%20', ' ') for a in args]  # Spaces can be weird in Mac
   print(args)
 
-  completed = subprocess.run(args, capture_output=False)
+  completed = subprocess.run(args)
 
   if completed.returncode == 0 and config.send_to_finalcut:
     xml_outpath = Path('output') / config.xml_file.name

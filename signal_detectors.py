@@ -1,7 +1,7 @@
-from collections import namedtuple, defaultdict
-from pathlib import Path
 import subprocess
 import ffmpeg
+from collections import namedtuple, defaultdict
+from pathlib import Path
 
 from google.cloud import speech_v1p1beta1 as speech
 from google.cloud.speech_v1p1beta1 import enums, types
@@ -100,26 +100,26 @@ class GoogleSpeechRecognition():
         words.append(word)
     return words
 
-  def prepare_data(self, path, google_bucket_name):
+  def prepare_data(self, path, google_bucket_name, unique_cloud_id):
     path = path.replace('file://', '').replace('%20', ' ')
     path = Path(path)
     assert path.exists(), f"File '{path}' doesn't exist"
     assert path.is_file(), f"Path '{path}' wasn't a file"
 
-    tmp_audio_file = f'/tmp/{path.stem}.wav'
+    tmp_audio_file = f'/tmp/{unique_cloud_id}_{path.stem}.wav'
     cloud_path = Path(tmp_audio_file)
     ffmpeg.input(path).output(tmp_audio_file).overwrite_output().run(
       quiet=True)
 
     if not google_utils.blob_exists(google_bucket_name, cloud_path.name):
-      print(f"Uploading file to {cloud_path.name}...")
+      print(f"Uploading file {cloud_path.name} to Google Storage...")
 
       google_utils.upload_blob(google_bucket_name, tmp_audio_file,
                                cloud_path.name)
 
     uri_path = f'gs://{google_bucket_name}/' + cloud_path.name
     audio = {"uri": uri_path}
-    return audio
+    return audio, cloud_path.name
 
 
 class Transcriber():
