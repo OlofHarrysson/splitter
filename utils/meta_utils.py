@@ -1,5 +1,6 @@
-from pathlib import Path
+import pyjokes
 import subprocess
+from pathlib import Path
 
 
 def get_project_root():
@@ -19,3 +20,7 @@ def clear_outdir():
   for p in outdir.iterdir():
     p = p.absolute()
     p.unlink()
+
+
+def get_joke():
+  return pyjokes.get_joke()

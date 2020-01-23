@@ -6,6 +6,21 @@ Find docs website
 Could I sign up a new google cloud and get $300 credit. Then limit duration to, say 5 minutes and systemwide $10 a day so people can skip that step.
 Could I possibly skip the git step, and just execute a docker container from the cloud? Pricing: $2.16/hour-channel
 timestamped_files when uploading to cloud
+Make sure to not allow suuuper long videos.
+xml_files should be string so it can be input
+
+support different python versions outside of docker? Change to bash?
+Have one published docker and give it two commands? get_assets.py, analyze_assets.py?
+
+Have some sort of prettyprint for a transcription. It can start the line with hour:minute:seconds- the words that come for that e.g. 10 seconds. Then new line with next words.
+
+Have some sort of set_config that saves some settings you want to be default into a yaml file.
+
+IMPORTANT
+1. I've made the :ro (read only) mount. Look over that in the code?
+2. implement prepare_xml function
+3. I dont even have to do python 2.7 then. It can be ONE command from docker online.
+
 
 Anfig note: prefer not to have the default setup with a string. Better to set it explicitly. Like register available ones
 

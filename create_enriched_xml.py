@@ -1,6 +1,7 @@
 import subprocess
 import anyfig
 import sys
+import os
 from pathlib import Path
 from datetime import datetime
 
@@ -47,10 +48,14 @@ class DebugConfig(Config):
 
 def main():
   config = anyfig.setup_config(default_config='DebugConfig')
+  joke = meta_utils.get_joke()
+  print(f'Here is a programming joke while you wait ;)\n\n{joke}\n')
+  prepare_xml(config.xml_file)
+  qwe
   asset_paths = xml_utils.get_asset_paths(config.xml_file)
 
   docker_asset_paths = set([f'{p.parent}:{p.parent}' for p in asset_paths])
-  docker_asset_paths = [f'-v {a}' for a in docker_asset_paths]
+  docker_asset_paths = [f'-v {a}:ro' for a in docker_asset_paths]
   docker_asset_paths = ' '.join(docker_asset_paths)
 
   if config.bash:
@@ -73,5 +78,12 @@ def main():
     meta_utils.send_xml_to_finalcut(xml_outpath)
 
 
+def prepare_xml(xml_path):
+  project_root = os.path.abspath(os.path.dirname(__file__))
+  print(project_root)
+
+
 if __name__ == '__main__':
   main()
+  # run prepare_xml in docker which puts a tmp jsonfile or sometime in /tmp
+  # run analyze in docker that looks for the /tmp file

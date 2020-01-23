@@ -3,3 +3,4 @@ google-cloud-storage==1.24.1
 anyfig
 lxml
 ffmpeg-python
+pyjokes
